@@ -21,19 +21,50 @@
           <th>Catégorie</th>
           <th>Prix</th>
           <th>Somme des avances</th>
-          <th>Referent</th>
           <th>Opérations</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="candidate in allCandidates" :key="candidate._id">
-          <td>{{ order(allCandidates, candidate) }}</td>
+        <tr
+          v-for="candidate in candidates"
+          :key="candidate._id"
+          :class="
+            candidate.Price ===
+            candidate.Avances.reduce((sum, value) => {
+              return sum + parseInt(value.Montant);
+            }, 0)
+              ? 'paid'
+              : ''
+          "
+        >
+          <td>{{ order(candidates, candidate) }}</td>
           <td>{{ candidate.Fname }} {{ candidate.Lname }}</td>
           <td>{{ candidate.Cin }}</td>
           <td>{{ candidate.Categorie }}</td>
-          <td class="green">{{ candidate.Price }}</td>
+          <td
+            :class="
+              candidate.Price ===
+              candidate.Avances.reduce((sum, value) => {
+                return sum + parseInt(value.Montant);
+              }, 0)
+                ? 'paid'
+                : 'green'
+            "
+          >
+            {{ candidate.Price }}
+          </td>
           <td>
-            <span class="avance" @click="manageAvances(candidate._id)">
+            <span
+              :class="
+                candidate.Price ===
+                candidate.Avances.reduce((sum, value) => {
+                  return sum + parseInt(value.Montant);
+                }, 0)
+                  ? 'paid'
+                  : 'avance'
+              "
+              @click="manageAvances(candidate._id)"
+            >
               {{
                 candidate.Avances
                   ? candidate.Avances.reduce((sum, value) => {
@@ -43,7 +74,6 @@
               }}
             </span>
           </td>
-          <td>{{ candidate.Cin }}</td>
           <td class="operationsContainer">
             <router-link :to="{ name: 'edit', params: { id: candidate._id } }">
               <i class="fas fa-user-edit" v-on:click="showEditForm"></i>
@@ -59,11 +89,7 @@
       </tbody>
     </table>
 
-    <Avances
-      v-if="showAvance"
-      @hideAvances="showAvance = !showAvance"
-      :id="id"
-    />
+    <Avances v-if="showAvance" @hideAvances="triggerAvanceModal" :id="id" />
   </div>
 </template>
 
@@ -89,6 +115,7 @@ export default {
       showAvance: false,
       id: "",
       sommeAvances: 0,
+      autoEcole: "Akka",
     };
   },
   async created() {
@@ -97,15 +124,19 @@ export default {
 
   computed: {
     ...mapGetters(["allCandidates"]),
+    candidates() {
+      return this.allCandidates(this.autoEcole);
+    },
   },
 
   methods: {
+    async triggerAvanceModal() {
+      this.showAvance = !this.showAvance;
+      await this.getCandidates();
+    },
     manageAvances(id) {
       this.showAvance = !this.showAvance;
       this.id = id;
-    },
-    console(a) {
-      console.log(a);
     },
 
     //sum of avances foreach
@@ -137,11 +168,9 @@ export default {
 </script>
 
 <style scoped>
-.pagination {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.paid {
+  color: rgb(38, 143, 38) !important;
+  text-decoration: line-through;
 }
 
 .pagination ul {
@@ -189,9 +218,6 @@ export default {
   background-color: rgb(168, 168, 168);
 }
 
-table {
-  width: 100%;
-}
 table,
 th,
 td {
@@ -212,9 +238,6 @@ th {
   align-items: center;
 }
 
-tr:nth-child(even) {
-  background-color: rgba(5, 5, 5, 0.1);
-}
 .fa-user-edit {
   color: #0275d8;
   cursor: pointer;

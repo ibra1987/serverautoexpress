@@ -28,4 +28,4 @@ const chargeSchema = new Schema({
   },
 });
 
-module.exports = chargeModel = mongoose.model("charges", chargeSchema);
+module.exports = chargeModel = mongoose.model("charge", chargeSchema);

@@ -218,7 +218,6 @@ export default {
         this.candidate.Categorie == "" ||
         this.candidate.autoEcole == ""
       ) {
-        console.log("hh");
         if (!this.errors.length) {
           this.errors.push("Merci de remplir tous les champs obligators");
         }
@@ -266,10 +265,11 @@ export default {
 .errors,
 .success {
   width: 80%;
-  background-color: rgb(220, 20, 60, 0.2);
+  background-color: rgba(197, 119, 135, 0.2);
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 2vh 2vw;
 }
 .success {
   background-color: rgba(6, 128, 46, 0.2);
@@ -325,6 +325,7 @@ form {
 .selectDiv {
   border-radius: 2px;
   display: flex;
+
   justify-content: space-between;
   align-items: center;
   width: 76%;

@@ -54,7 +54,10 @@
                 {{ Avance.dateAvance | moment("DD-MM-YYYY") }}
               </td>
               <td>
-                <span class="x" @click="removeAvance(Avance._id)">X</span>
+                <i
+                  @click="confirmation(Avance._id)"
+                  class="fas fa-trash-alt"
+                ></i>
               </td>
             </tr>
           </tbody>
@@ -93,9 +96,10 @@ export default {
 
   methods: {
     ...mapActions(["addNewAvance", "deleteAvance"]),
-
-    hover(id) {
-      console.log(id);
+    confirmation(cid) {
+      if (confirm("Etes vous sur de vouloir supprimer?")) {
+        this.removeAvance(cid);
+      }
     },
 
     async addAvance() {
@@ -118,8 +122,6 @@ export default {
         }
       );
 
-      console.log(response.data);
-
       if (response.status === 201) {
         const payload = {
           avance: {
@@ -129,6 +131,7 @@ export default {
           id: this.id,
         };
         this.$store.commit("avanceAdded", payload);
+        this.newAvance = [];
       }
 
       if (!this.success.length) {
@@ -146,9 +149,11 @@ export default {
           avid,
         };
         if (this.deleteAvance(payload))
-          return setTimeout(() => {
-            this.success.push("Supprimé avec succèss");
-          }, 4000);
+          this.success.push(" Avance supprimée avec succèss");
+        setTimeout(() => {
+          this.success = [];
+          this.$emit("hideAvances");
+        }, 2000);
       }
     },
   },
@@ -164,7 +169,7 @@ export default {
 </script>
 
 <style scoped>
-.x {
+.fa {
   font-size: 0.8em;
   font-weight: bold;
   color: red;

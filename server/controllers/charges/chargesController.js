@@ -1,4 +1,4 @@
-const chargeModel = require("../../models/charge");
+const chargeModel = require("../../models/Charge");
 const { createRecord, deleteRecord } = require("../../config/data");
 const { validationResult } = require("express-validator");
 

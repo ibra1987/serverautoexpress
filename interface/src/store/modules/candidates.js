@@ -6,7 +6,15 @@ const state = {
 };
 
 const getters = {
-  allCandidates: (state) => state.candidates,
+  allCandidates: (state) => (auto) => {
+    let newState = [];
+    state.candidates.map((candidate) => {
+      if (candidate.autoEcole === auto) newState.unshift(candidate);
+    });
+
+    return newState;
+  },
+
   singleCandidate: (state) => (id) =>
     state.candidates.find((candidate) => candidate._id === id),
 };
@@ -66,9 +74,8 @@ const actions = {
       `${baseUrl}/avance/delete/${payload.cid}/${payload.avid}`
     );
 
-    if (response.status === 204) {
-      commit("avanceRemoved", payload);
-    }
+    commit("avanceRemoved", response.data);
+    return true;
   },
 };
 

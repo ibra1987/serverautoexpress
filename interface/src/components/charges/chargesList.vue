@@ -172,7 +172,7 @@ export default {
 
 .dateCharge i {
   position: absolute;
-  top: 2;
+  top: 2px;
   right: 5px;
   font-size: 15px;
 }
@@ -206,9 +206,6 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-}
-table {
-  width: 60% !important;
 }
 
 form {

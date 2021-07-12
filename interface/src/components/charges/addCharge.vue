@@ -1,8 +1,8 @@
 <template>
   <div class="addChargeFormContainer">
-    <p>
+    <div class="formHeader">
       Ajouter une charge
-    </p>
+    </div>
     <form method="post" @submit.prevent="chargeSubmitted">
       <input
         type="text"
@@ -65,8 +65,11 @@ export default {
 </script>
 
 <style scoped>
-p {
-  color: white;
+.formHeader {
+  color: #292b2c;
+  width: 100%;
+  padding: 2vh 0;
+  background-color: #ffbb33;
 }
 .btnBlock {
   width: 100%;

@@ -6,6 +6,7 @@ import chargesList from "../components/charges/chargesList";
 import Avances from "../components/avances/Avances.vue";
 import Home from "../components/shared/Home.vue";
 import vehiculesList from "../components/vehicules/vehiculesList.vue";
+import echeancesList from "../components/echeances/echeancesList.vue";
 
 const routes = [
   {
@@ -44,6 +45,11 @@ const routes = [
     path: "/charges",
     name: "charges",
     component: chargesList,
+  },
+  {
+    path: "/echeances",
+    name: "echeances",
+    component: echeancesList,
   },
 ];
 

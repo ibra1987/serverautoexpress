@@ -22,8 +22,13 @@ export default {
 </script>
 
 <style>
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 table {
-  width: 100%;
+  width: 90%;
 }
 table,
 th,
@@ -33,7 +38,10 @@ td {
   text-align: center;
   padding: 1vh;
 }
-
+.addComponent {
+  width: 30%;
+  border-radius: 2px;
+}
 th {
   background-color: #292b2c;
   color: rgb(255, 255, 255);
@@ -46,7 +54,7 @@ th {
 }
 
 tr:nth-child(even) {
-  background-color: rgb(233, 236, 240);
+  background-color: rgba(246, 249, 255, 0.932);
 }
 .fa-user-edit {
   color: #0275d8;
@@ -93,6 +101,5 @@ tr:nth-child(even) {
   width: 80%;
   margin: auto;
   padding: 0 10px;
-  background-color: rgb(255, 254, 254);
 }
 </style>
