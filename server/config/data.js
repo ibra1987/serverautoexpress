@@ -59,8 +59,14 @@ exports.updateRecord = async (req, res, model) => {
 
 exports.deleteRecord = async (req, res, model) => {
   const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(404).json({ msg: "pas d'enregistrement" });
 
-  const deleted = await model.findByIdAndDelete(id);
+  try {
+    const deleted = await model.findByIdAndDelete(id.trim());
 
-  return res.status(200).json(deleted);
+    return res.status(200).json(deleted);
+  } catch (error) {
+    res.status(404).json(error.message);
+  }
 };

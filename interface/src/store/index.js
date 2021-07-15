@@ -3,6 +3,7 @@ import candidates from "./modules/candidates";
 import charges from "./modules/charges";
 import vehicules from "./modules/vehicules";
 import echeances from "./modules/echeances";
+import globalState from "./modules/globalState";
 import Vue from "vue";
 Vue.use(Vuex);
 
@@ -12,6 +13,7 @@ const store = new Vuex.Store({
     charges,
     vehicules,
     echeances,
+    globalState,
   },
 });
 

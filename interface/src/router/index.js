@@ -7,8 +7,14 @@ import Avances from "../components/avances/Avances.vue";
 import Home from "../components/shared/Home.vue";
 import vehiculesList from "../components/vehicules/vehiculesList.vue";
 import echeancesList from "../components/echeances/echeancesList.vue";
+import home from "../components/Home/home.vue";
 
 const routes = [
+  {
+    path: "/",
+    component: home,
+    name: "home",
+  },
   {
     path: "/candidates/:p?",
     component: candidatesList,

@@ -91,12 +91,12 @@
           <div class="selectDiv">
             <select
               name=""
-              id=""
               v-model="candidate.Categorie"
               @focus="focused($event)"
               @blur="focused($event)"
+              id="1"
             >
-              <option value="" selected>Catégorie</option>
+              <option selected>Catégorie</option>
               <option value="A">A</option>
               <option value="B">B</option>
               <option value="C">C</option>
@@ -105,14 +105,14 @@
             </select>
             <select
               name=""
-              id=""
+              id="2"
               v-model="candidate.autoEcole"
               @focus="focused($event)"
               @blur="focused($event)"
             >
-              <option value="" selected>Auto Ecole</option>
-              <option value="akka">AKKA</option>
-              <option value="aguid">ZGUID</option>
+              <option selected> Auto Ecole</option>
+              <option value="Akka">AKKA</option>
+              <option value="Zguid">ZGUID</option>
             </select>
             <select
               v-model="candidate.Extension"

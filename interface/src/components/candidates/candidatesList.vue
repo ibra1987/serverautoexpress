@@ -115,7 +115,6 @@ export default {
       showAvance: false,
       id: "",
       sommeAvances: 0,
-      autoEcole: "Akka",
     };
   },
   async created() {
@@ -123,9 +122,12 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["allCandidates"]),
+    ...mapGetters(["allCandidates", "selectedAuto"]),
     candidates() {
       return this.allCandidates(this.autoEcole);
+    },
+    autoEcole() {
+      return this.selectedAuto;
     },
   },
 

@@ -94,7 +94,7 @@
               @focus="focused($event)"
               @blur="focused($event)"
             >
-              <option value="" selected>Catégorie</option>
+              <option value="" selected id="5">Catégorie</option>
               <option value="A">A</option>
               <option value="B">B</option>
               <option value="C">C</option>
@@ -108,7 +108,7 @@
               @focus="focused($event)"
               @blur="focused($event)"
             >
-              <option value="" selected>Auto Ecole</option>
+              <option value="" selected id="4"> Auto Ecole</option>
               <option value="akka">AKKA</option>
               <option value="aguid">ZGUID</option>
             </select>
