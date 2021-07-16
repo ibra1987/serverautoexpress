@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 
 const baseUrl = "http://localhost:3001/candidates";
 const state = {
@@ -17,6 +18,14 @@ const getters = {
 
   singleCandidate: (state) => (id) =>
     state.candidates.find((candidate) => candidate._id === id),
+
+  candidatesSemaine: (state) => {
+    //let currentDate = moment();
+
+    state.candidates.map((candidate) => {
+      console.log(moment(candidate.dateEntree).format("DD"));
+    });
+  },
 };
 
 const actions = {

@@ -8,13 +8,29 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "home",
 
   date() {
     return {
-      benefices: 0,
+      beneficesTotal: 0,
+      chargesDuMois: 0,
+      candidatesSemaine: 0,
+      candidatesMois: 0,
+      totalCharges: 0,
+      Encaisse: 0,
+      beneficesDuMois: 0,
+      Caisse: 0,
+      Banque: 0,
     };
+  },
+  computed: {
+    ...mapGetters(["candidatesSemaine"]),
+  },
+
+  created() {
+    console.log(this.candidatesSemaine);
   },
 };
 </script>
