@@ -1,5 +1,6 @@
 const state = {
   autoEcole: "Akka",
+  benefices: 0,
 };
 
 const getters = {

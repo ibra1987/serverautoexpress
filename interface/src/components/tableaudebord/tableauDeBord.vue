@@ -10,6 +10,12 @@
 <script>
 export default {
   name: "home",
+
+  date() {
+    return {
+      benefices: 0,
+    };
+  },
 };
 </script>
 
