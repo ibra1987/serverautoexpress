@@ -1,7 +1,9 @@
 <template>
   <div class="homeContainer">
-    <div class="card">1</div>
-    <div class="card">2</div>
+    <div class="card candidats">
+      <p>Nouveau candidats cette semaine: +{{ candidatsDeSemaine.length }}</p>
+    </div>
+    <div class="card ">2</div>
     <div class="card">3</div>
     <div class="card">4</div>
   </div>
@@ -12,11 +14,11 @@ import { mapGetters } from "vuex";
 export default {
   name: "home",
 
-  date() {
+  data() {
     return {
       beneficesTotal: 0,
       chargesDuMois: 0,
-      candidatesSemaine: 0,
+
       candidatesMois: 0,
       totalCharges: 0,
       Encaisse: 0,
@@ -27,10 +29,13 @@ export default {
   },
   computed: {
     ...mapGetters(["candidatesSemaine"]),
-  },
 
-  created() {
-    console.log(this.candidatesSemaine);
+    candidatsDeSemaine() {
+      return this.candidatesSemaine;
+    },
+  },
+  async created() {
+    this.candidatsDeSemaine = await this.candidatesSemaine;
   },
 };
 </script>
@@ -44,8 +49,10 @@ export default {
   align-content: center;
 }
 .card {
-  background-color: crimson;
   width: 20%;
   padding: 1vh 1vw;
+}
+.candidats {
+  background-color: rgb(9, 219, 9);
 }
 </style>

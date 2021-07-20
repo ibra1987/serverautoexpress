@@ -90,13 +90,11 @@
         <div class="rightSide">
           <div class="selectDiv">
             <select
-              name=""
               v-model="candidate.Categorie"
               @focus="focused($event)"
               @blur="focused($event)"
-              id="1"
             >
-              <option selected>Catégorie</option>
+              <option value="0" selected>Catégorie</option>
               <option value="A">A</option>
               <option value="B">B</option>
               <option value="C">C</option>
@@ -104,13 +102,11 @@
               <option value="EC">EC</option>
             </select>
             <select
-              name=""
-              id="2"
               v-model="candidate.autoEcole"
               @focus="focused($event)"
               @blur="focused($event)"
             >
-              <option selected> Auto Ecole</option>
+              <option value="0" selected> Auto Ecole</option>
               <option value="Akka">AKKA</option>
               <option value="Zguid">ZGUID</option>
             </select>
@@ -316,14 +312,12 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: 2px;
   width: 80%;
   height: 6vh;
   padding: 0 10px;
   margin: 2vh 0;
 }
 .selectDiv {
-  border-radius: 2px;
   display: flex;
 
   justify-content: space-between;
@@ -339,7 +333,7 @@ select {
   width: 30%;
   height: 100%;
   outline-color: skyblue;
-  background-color: rgb(243, 243, 243);
+  background-color: inherit;
   border-radius: 5px;
 }
 .input {
@@ -350,8 +344,6 @@ select {
   padding-left: 10px;
   width: 99%;
   height: 100%;
-  background-color: rgb(243, 243, 243);
-  border-radius: 5px;
 }
 
 .fullName {

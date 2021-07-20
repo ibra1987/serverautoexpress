@@ -12,11 +12,20 @@
 <script>
 import navBar from "./components/shared/navBar.vue";
 import myHeader from "./components/shared/headerBoard.vue";
+import { mapActions } from "vuex";
 export default {
   name: "App",
   components: {
     navBar,
     myHeader,
+  },
+
+  methods: {
+    ...mapActions(["getCandidates"]),
+  },
+
+  async created() {
+    await this.getCandidates();
   },
 };
 </script>

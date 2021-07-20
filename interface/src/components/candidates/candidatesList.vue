@@ -117,9 +117,6 @@ export default {
       sommeAvances: 0,
     };
   },
-  async created() {
-    await this.getCandidates();
-  },
 
   computed: {
     ...mapGetters(["allCandidates", "selectedAuto"]),
@@ -153,7 +150,7 @@ export default {
       this.editForm = !this.editForm;
     },
     //load candidates
-    ...mapActions(["getCandidates", "removeCandidate"]),
+    ...mapActions(["removeCandidate"]),
     //order  12 3....
     order(arr, item) {
       return Array.from(arr).indexOf(item) + 1;

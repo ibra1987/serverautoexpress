@@ -20,11 +20,33 @@ const getters = {
     state.candidates.find((candidate) => candidate._id === id),
 
   candidatesSemaine: (state) => {
-    //let currentDate = moment();
+    const newState = [];
 
     state.candidates.map((candidate) => {
-      console.log(moment(candidate.dateEntree).format("DD"));
+      const debutDeSemaine = moment()
+        .startOf("isoWeek")
+        .format("DD");
+      const finDeSemaine = moment()
+        .endOf("isoWeek")
+        .format("DD");
+
+      const currentYear = moment().format("YYYY");
+      const currentMonth = moment().format("MM");
+      const candidateMonth = moment(candidate.dateEntree).format("MM");
+      const candidateDay = moment(candidate.dateEntree).format("DD");
+
+      if (currentYear === moment(candidate.dateEntree).format("YYYY")) {
+        if (parseInt(currentMonth) === parseInt(candidateMonth)) {
+          if (
+            parseInt(candidateDay) >= parseInt(debutDeSemaine) &&
+            parseInt(candidateDay) <= parseInt(finDeSemaine)
+          ) {
+            newState.push(candidate);
+          }
+        }
+      }
     });
+    return newState;
   },
 };
 

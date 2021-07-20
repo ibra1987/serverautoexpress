@@ -316,7 +316,6 @@ select {
   width: 30%;
   height: 100%;
   outline-color: skyblue;
-  background-color: rgb(243, 243, 243);
   border-radius: 5px;
 }
 .input {
@@ -327,7 +326,6 @@ select {
   padding-left: 10px;
   width: 99%;
   height: 100%;
-  background-color: rgb(243, 243, 243);
   border-radius: 5px;
 }
 

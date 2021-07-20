@@ -25,7 +25,7 @@ exports.createCandidate = async (req, res) => {
     Referent: req.body.Referent,
     autoEcole: req.body.autoEcole,
     Avances: {
-      Montant: req.body.Avances,
+      Montant: req.body.Avances || 0,
     },
   };
 
