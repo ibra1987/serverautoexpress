@@ -1,7 +1,8 @@
 <template>
   <div class="myHeader">
+    <add-auto-ecole v-if="showAutoForm" @hideModal="hideModal" />
     <h1>Auto Ecole {{ autoEcole }}</h1>
-    <input type="text" v-if="newAutoInput" v-model="newAuto" />
+
     <select
       id="3"
       name="autoEcole"
@@ -17,13 +18,17 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import addAutoEcole from "./addAutoEcole.vue";
 
 export default {
   name: "myHeader",
+  components: {
+    addAutoEcole,
+  },
   data() {
     return {
       autoEcole: "",
-      newAutoInput: false,
+      showAutoForm: false,
       newAuto: "",
     };
   },
@@ -33,12 +38,11 @@ export default {
     changeAuto(e) {
       this.selectNewAuto(e.target.value);
     },
+    hideModal() {
+      this.showAutoForm = false;
+    },
     newAutoAdd() {
-      if (this.newAutoInput) {
-        if (this.newAuto !== "") {
-          this.addNewAuto();
-        }
-      }
+      this.showAutoForm = !this.showAutoForm;
     },
   },
   computed: {
@@ -60,22 +64,23 @@ export default {
   color: white;
   background-color: #292b2c;
   margin-bottom: 20px;
-  position: relative;
+  /* position: relative; */
 }
 
 select {
   position: absolute;
-  bottom: 10px;
-  right: 3em;
+  top: 10px;
+  right: 15vw;
   padding: 1vh 2vw;
   outline: none;
   border: none;
   font-size: 1rem;
 }
+
 span {
   position: absolute;
-  bottom: 5px;
-  right: 5px;
+  top: 5px;
+  right: 12vw;
   border: none;
   font-size: 2.5rem;
   cursor: pointer;
