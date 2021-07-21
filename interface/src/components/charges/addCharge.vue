@@ -9,16 +9,19 @@
         name="Libelle"
         placeholder="Libelle "
         v-model="Libelle"
-        id=""
       />
       <input
         type="number"
         name="Montant"
         placeholder="Montant "
         v-model="Montant"
-        id=""
       />
-      <input type="date" name="dateCharge" v-model="dateCharge" id="" />
+      <select v-model="autoEcole">
+        <option value="0" selected> Auto Ecole</option>
+        <option value="Akka">AKKA</option>
+        <option value="Zguid">ZGUID</option>
+      </select>
+      <input type="date" name="dateCharge" v-model="dateCharge" />
       <submit-button :btnText="'Ajouter'" :type="'submit'" class="btnBlock" />
     </form>
   </div>
@@ -37,6 +40,7 @@ export default {
       Libelle: "",
       Montant: "",
       dateCharge: "",
+      autoEcole: "",
     };
   },
 
@@ -46,13 +50,13 @@ export default {
       const newCharge = {
         Libelle: this.Libelle,
         Montant: this.Montant,
+        autoEcole: this.autoEcole,
         dateCharge: {
           Day: moment(this.dateCharge).format("DD"),
           Month: moment(this.dateCharge).format("MM"),
           Year: moment(this.dateCharge).format("YYYY"),
         },
       };
-      console.log(newCharge);
 
       await this.addCharge(newCharge);
       this.Libelle = "";
@@ -93,7 +97,8 @@ form {
   align-items: center;
 }
 
-input {
+input,
+select {
   margin: 10px;
   padding: 1vh 5px;
   width: 100%;

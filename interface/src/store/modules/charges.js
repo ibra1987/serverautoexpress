@@ -7,11 +7,12 @@ const state = {
 
 const getters = {
   allCharges: (state) => state.charges,
-  getCurrentMonthCharges: (state) => (month, year) => {
+  getCurrentMonthCharges: (state) => (month, year, auto) => {
     return state.charges.filter(
       (monthCharges) =>
         monthCharges.dateCharge.Month === String(month) &&
-        monthCharges.dateCharge.Year === String(year)
+        monthCharges.dateCharge.Year === String(year) &&
+        monthCharges.autoEcole === auto
     );
   },
 };

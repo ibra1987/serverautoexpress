@@ -7,7 +7,7 @@ const chargeSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    maxlength: 15,
+    maxlength: 60,
   },
   Montant: {
     type: String,
@@ -25,6 +25,10 @@ const chargeSchema = new Schema({
     Year: {
       type: String,
     },
+  },
+  autoEcole: {
+    type: String,
+    required: true,
   },
 });
 

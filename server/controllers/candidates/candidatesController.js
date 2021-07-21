@@ -1,4 +1,5 @@
 const candidateModel = require("../../models/Candidate");
+const chargeModel = require("../../models/Charge");
 const {
   readRecords,
   createRecord,
@@ -28,9 +29,39 @@ exports.createCandidate = async (req, res) => {
       Montant: req.body.Avances || 0,
     },
   };
+  const currentDate = new Date();
+
+  let charge;
+
+  if (candidate.Extension) {
+    charge = 650;
+  } else {
+    charge = 700;
+  }
+
+  let jour = currentDate.getDate();
+  let mois = currentDate.getMonth() + 1;
+  if (currentDate.getDate() < 10) {
+    jour = `0${currentDate.getDate()}`;
+  }
+  if (currentDate.getMonth() < 10) {
+    mois = `0${currentDate.getMonth() + 1}`;
+  }
+  const fraisDossier = {
+    Libelle: `frais dossier:${candidate.Fname} ${candidate.Lname}`,
+    Montant: charge,
+    dateCharge: {
+      Day: jour,
+      Month: mois,
+      Year: currentDate.getFullYear(),
+    },
+  };
+
+  const newCharge = new chargeModel(fraisDossier);
 
   try {
     await createRecord(req, res, candidateModel, candidate);
+    await newCharge.save();
   } catch (error) {
     res.status(400).json(error);
   }

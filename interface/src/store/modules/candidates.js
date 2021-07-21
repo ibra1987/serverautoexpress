@@ -19,10 +19,13 @@ const getters = {
   singleCandidate: (state) => (id) =>
     state.candidates.find((candidate) => candidate._id === id),
 
-  candidatesSemaine: (state) => {
+  candidatesSemaine: (state) => (auto) => {
+    const candidates = state.candidates.filter(
+      (candidate) => candidate.autoEcole === auto
+    );
     const newState = [];
 
-    state.candidates.map((candidate) => {
+    candidates.map((candidate) => {
       const debutDeSemaine = moment()
         .startOf("isoWeek")
         .format("DD");

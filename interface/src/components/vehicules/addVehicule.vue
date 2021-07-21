@@ -12,6 +12,11 @@
         :class="errors.length > 0 ? 'error' : ''"
         @keyup="errors = []"
       />
+      <select v-model="autoEcole">
+        <option value="0" selected> Auto Ecole</option>
+        <option value="Akka">AKKA</option>
+        <option value="Zguid">ZGUID</option>
+      </select>
       <input
         name="dateAssur"
         placeholder="Date assurance"
@@ -46,6 +51,7 @@ export default {
       Immat: "",
       dateAssur: "",
       dateVisite: "",
+      autoEcole: "",
       errors: [],
       success: [],
     };
@@ -116,7 +122,8 @@ form {
   align-items: center;
 }
 
-input {
+input,
+select {
   margin: 10px;
   padding: 1vh 5px;
   width: 100%;

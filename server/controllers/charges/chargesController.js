@@ -12,6 +12,7 @@ exports.createCharge = async (req, res) => {
     Libelle: req.body.Libelle,
     Montant: req.body.Montant,
     dateCharge: req.body.dateCharge,
+    autoEcole: req.body.autoEcole,
   };
 
   try {

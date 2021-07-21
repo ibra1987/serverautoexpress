@@ -1,6 +1,7 @@
 <template>
   <div class="myHeader">
     <h1>Auto Ecole {{ autoEcole }}</h1>
+    <input type="text" v-if="newAutoInput" v-model="newAuto" />
     <select
       id="3"
       name="autoEcole"
@@ -10,6 +11,7 @@
       <option value="Akka">Akka</option>
       <option value="Zguid">Zguid</option>
     </select>
+    <span @click="newAutoAdd">+</span>
   </div>
 </template>
 
@@ -21,6 +23,8 @@ export default {
   data() {
     return {
       autoEcole: "",
+      newAutoInput: false,
+      newAuto: "",
     };
   },
 
@@ -28,6 +32,13 @@ export default {
     ...mapActions(["selectNewAuto"]),
     changeAuto(e) {
       this.selectNewAuto(e.target.value);
+    },
+    newAutoAdd() {
+      if (this.newAutoInput) {
+        if (this.newAuto !== "") {
+          this.addNewAuto();
+        }
+      }
     },
   },
   computed: {
@@ -55,10 +66,18 @@ export default {
 select {
   position: absolute;
   bottom: 10px;
-  right: 10px;
+  right: 3em;
   padding: 1vh 2vw;
   outline: none;
   border: none;
   font-size: 1rem;
+}
+span {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  border: none;
+  font-size: 2.5rem;
+  cursor: pointer;
 }
 </style>

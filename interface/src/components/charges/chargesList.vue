@@ -119,7 +119,8 @@ export default {
     currentMonthCharges() {
       return (this.charges = this.getCurrentMonthCharges(
         this.selectedMonth,
-        this.selectedYear
+        this.selectedYear,
+        this.selectedAuto
       ));
     },
     async reloaded() {
@@ -138,7 +139,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["getCurrentMonthCharges"]),
+    ...mapGetters(["getCurrentMonthCharges", "selectedAuto"]),
 
     months() {
       const arr = [];

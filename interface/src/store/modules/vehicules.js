@@ -6,7 +6,8 @@ const state = {
 };
 
 const getters = {
-  allVehicules: (state) => state.vehicules,
+  allVehicules: (state) => (auto) =>
+    state.vehicules.filter((vehicule) => vehicule.autoEcole === auto),
 };
 
 const actions = {

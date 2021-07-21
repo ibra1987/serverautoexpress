@@ -17,6 +17,7 @@ exports.createVehicule = async (req, res) => {
     Immat: req.body.Immat,
     dateAssur: req.body.dateAssur,
     dateVisite: req.body.dateVisite,
+    autoEcole: req.body.autoEcole,
   };
   const response = await createRecord(req, res, vehiculeModel, newVehicule);
   res.status(201).json(response);

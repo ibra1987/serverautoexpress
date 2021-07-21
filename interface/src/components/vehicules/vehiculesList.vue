@@ -48,6 +48,7 @@ export default {
   components: {
     addVehicule,
   },
+
   methods: {
     ...mapActions(["getVehicules", "removeVehicule"]),
     confirmation(id) {
@@ -72,10 +73,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["allVehicules"]),
+    ...mapGetters(["allVehicules", "selectedAuto"]),
 
     vehicules() {
-      return this.allVehicules;
+      return this.allVehicules(this.selectedAuto);
     },
   },
 
