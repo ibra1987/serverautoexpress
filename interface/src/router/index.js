@@ -16,6 +16,11 @@ const routes = [
     name: "tableauDeBord",
   },
   {
+    path: "/candidates/edit/:id",
+    component: editCandidate,
+    name: "edit",
+  },
+  {
     path: "/candidates/:p?",
     component: candidatesList,
     name: "candidates",
@@ -24,11 +29,6 @@ const routes = [
         path: "/candidates/create",
         component: addCandidate,
         name: "create",
-      },
-      {
-        path: "/candidates/edit/:id",
-        component: editCandidate,
-        name: "edit",
       },
 
       {

@@ -12,4 +12,4 @@ const autoEcoleSchema = new Schema({
     default: Date.now,
   },
 });
-module.exports = autoEcoleModel = mongoose.model("autoecole", autoecoleSchema);
+module.exports = autoEcoleModel = mongoose.model("autoecole", autoEcoleSchema);

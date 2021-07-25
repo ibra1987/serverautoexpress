@@ -10,7 +10,7 @@
       </router-link>
     </div>
     <add-candidate v-on:hideme="showForm" v-show="addForm" />
-    <edit-candidate v-if="editForm" @hideEdit="showEditForm" />
+    <!-- <edit-candidate v-if="editForm" @hideEdit="showEditForm" /> -->
 
     <table v-show="!addForm">
       <thead>
@@ -76,7 +76,7 @@
           </td>
           <td class="operationsContainer">
             <router-link :to="{ name: 'edit', params: { id: candidate._id } }">
-              <i class="fas fa-user-edit" v-on:click="showEditForm"></i>
+              <i class="fas fa-user-edit"></i>
             </router-link>
 
             <i
@@ -97,14 +97,14 @@
 import { mapGetters, mapActions } from "vuex";
 import submitButton from "../shared/submitButton.vue";
 import addCandidate from "./addCandidate.vue";
-import editCandidate from "./editCandidate.vue";
+// import editCandidate from "./editCandidate.vue";
 import Avances from "../avances/Avances.vue";
 export default {
   name: "candidatesList",
   components: {
     submitButton,
     addCandidate,
-    editCandidate,
+    // editCandidate,
     Avances,
   },
 

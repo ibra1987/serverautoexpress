@@ -9,7 +9,7 @@ exports.createAutoEcole = async (req, res) => {
     return res.json({ errors: errors.array() });
   }
   const newAutoEcole = {
-    Name: req.body.autoEcole,
+    Name: req.body.Name,
   };
 
   try {

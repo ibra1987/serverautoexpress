@@ -1,16 +1,15 @@
 <template>
   <div class="myHeader">
     <add-auto-ecole v-if="showAutoForm" @hideModal="hideModal" />
-    <h1>Auto Ecole {{ autoEcole }}</h1>
+    <h1>Auto Ecole {{ selected }}</h1>
 
-    <select
-      id="3"
-      name="autoEcole"
-      v-model="autoEcole"
-      @change="changeAuto($event)"
-    >
-      <option value="Akka">Akka</option>
-      <option value="Zguid">Zguid</option>
+    <select @change="changeAuto($event)" :selected="selected">
+      <option
+        v-for="autoEcole in autoEcoles"
+        :key="autoEcole._id"
+        :value="autoEcole.Name"
+        >{{ autoEcole.Name }}</option
+      >
     </select>
     <span @click="newAutoAdd">+</span>
   </div>
@@ -27,16 +26,17 @@ export default {
   },
   data() {
     return {
-      autoEcole: "",
       showAutoForm: false,
       newAuto: "",
+      selected: "",
     };
   },
 
   methods: {
-    ...mapActions(["selectNewAuto"]),
+    ...mapActions(["selectNewAuto", "getAutoEcoles"]),
     changeAuto(e) {
       this.selectNewAuto(e.target.value);
+      this.selected = e.target.value;
     },
     hideModal() {
       this.showAutoForm = false;
@@ -46,10 +46,15 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["selectedAuto"]),
+    ...mapGetters(["selectedAuto", "allAutoEcoles"]),
+
+    autoEcoles() {
+      return this.allAutoEcoles;
+    },
   },
-  created() {
-    this.autoEcole = this.selectedAuto;
+  async created() {
+    await this.getAutoEcoles();
+    this.selected = this.selectedAuto;
   },
 };
 </script>

@@ -94,7 +94,7 @@
               @focus="focused($event)"
               @blur="focused($event)"
             >
-              <option value="0" selected>Catégorie</option>
+              <option value="Catégorie">Catégorie</option>
               <option value="A">A</option>
               <option value="B">B</option>
               <option value="C">C</option>
@@ -106,9 +106,14 @@
               @focus="focused($event)"
               @blur="focused($event)"
             >
-              <option value="0" selected> Auto Ecole</option>
-              <option value="Akka">AKKA</option>
-              <option value="Zguid">ZGUID</option>
+              <option value="Auto Ecole">Auto Ecole</option>
+              <option
+                v-for="auto in autoEcoles"
+                :key="auto._id"
+                :value="auto.Name"
+              >
+                {{ auto.Name }}
+              </option>
             </select>
             <select
               v-model="candidate.Extension"
@@ -164,7 +169,7 @@
 
 <script>
 import submitButton from "../shared/submitButton.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "addCandidate",
 
@@ -174,22 +179,30 @@ export default {
 
   data() {
     return {
+      selected: "",
       success: [],
       errors: [],
-
+      autoEcoles: [],
       candidate: {
         Fname: "",
         Lname: "",
         Cin: "",
         Adresse: "",
-        Categorie: "",
+        Categorie: "Catégorie",
         Price: "",
         Referent: "",
         Tel: "",
         Extension: false,
-        autoEcole: "",
+        autoEcole: "Auto Ecole",
       },
     };
+  },
+
+  computed: {
+    ...mapGetters(["allAutoEcoles"]),
+  },
+  async created() {
+    this.autoEcoles = await this.allAutoEcoles;
   },
 
   methods: {

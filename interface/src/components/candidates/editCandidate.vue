@@ -27,12 +27,10 @@
         </ul>
       </div>
     </div>
-    <submit-button
-      @click.native="hide"
-      :btnText="'Annuler'"
-      :type="'button'"
-      class="annuler"
-    />
+    <router-link to="/candidates">
+      <submit-button :btnText="'Annuler'" :type="'button'" class="annuler" />
+    </router-link>
+
     <form method="post" @submit.prevent="validate">
       <div class="inputsContainer">
         <div class="leftSide">
@@ -88,8 +86,6 @@
         <div class="rightSide">
           <div class="selectDiv">
             <select
-              name=""
-              id=""
               v-model="candidate.Categorie"
               @focus="focused($event)"
               @blur="focused($event)"
@@ -101,16 +97,19 @@
               <option value="D">D</option>
               <option value="EC">EC</option>
             </select>
+
             <select
-              name=""
-              id=""
-              v-model="candidate.autoEcole"
               @focus="focused($event)"
               @blur="focused($event)"
+              @change="changeAuto($event)"
             >
-              <option value="" selected id="4"> Auto Ecole</option>
-              <option value="akka">AKKA</option>
-              <option value="aguid">ZGUID</option>
+              <option
+                :selected="selectedAuto"
+                v-for="autoEcole in autoEcoles"
+                :key="autoEcole._id"
+                :value="autoEcole.Name"
+                >{{ autoEcole.Name }}</option
+              >
             </select>
             <select
               v-model="candidate.Extension"
@@ -168,6 +167,9 @@ export default {
     return {
       success: [],
       errors: [],
+      candidate: {},
+      autoEcoles: [],
+      selected: "",
     };
   },
 
@@ -204,21 +206,29 @@ export default {
       }
 
       this.updateCandidate(this.candidate);
-      this.$emit("hideme");
+
       if (!this.success.length) {
-        return setTimeout(() => {
-          this.errors = [];
-        }, 4000);
+        this.success.push("modifie avec succes");
+        setTimeout(() => {
+          this.success = [];
+          return this.$router.push({ path: "/candidates" });
+        }, 1000);
       }
     },
   },
   computed: {
-    ...mapGetters(["allCandidates"]),
-    candidate() {
-      return this.allCandidates.filter(
-        (c) => c._id === this.$route.params.id
-      )[0];
-    },
+    ...mapGetters([
+      "allCandidates",
+      "selectedAuto",
+      "singleCandidate",
+      "allAutoEcoles",
+    ]),
+  },
+
+  async created() {
+    this.candidate = await this.singleCandidate(this.$route.params.id);
+
+    this.autoEcoles = await this.allAutoEcoles;
   },
 };
 </script>

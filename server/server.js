@@ -3,6 +3,7 @@ const candidatesRoutes = require("./routes/candidatesRoutes");
 const chargesRoutes = require("./routes/chargesRoutes");
 const vehiculesRoutes = require("./routes/vehiculesRoutes");
 const echeancesRoutes = require("./routes/echeancesRoutes");
+const autoEcolesRoutes = require("./routes/autoEcolesRoutes");
 
 const dotenv = require("dotenv");
 const connection = require("./config/db");
@@ -25,3 +26,4 @@ app.use("/candidates", candidatesRoutes);
 app.use("/charges", chargesRoutes);
 app.use("/vehicules", vehiculesRoutes);
 app.use("/echeances", echeancesRoutes);
+app.use("/autoecoles", autoEcolesRoutes);

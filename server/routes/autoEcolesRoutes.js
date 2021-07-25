@@ -5,7 +5,7 @@ const {
   getAutoEcoles,
 } = require("../controllers/autoecoles/autoEcolesController");
 const {
-  chargesValidator,
+  autoEcolesValidator,
 } = require("../controllers/autoecoles/autoEcolesValidator");
 const router = express.Router();
 

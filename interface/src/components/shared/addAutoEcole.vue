@@ -1,23 +1,26 @@
 <template>
   <div class="modalContainer">
     <div class="modal">
-      <div class="inputContainer">
-        <input
-          type="text"
-          v-model="autoEcole"
-          placeholder="Ajouter une nouvelle auto ecole"
-        />
+      <form @submit.prevent="addNewAuto">
+        <div class="inputContainer">
+          <input
+            type="text"
+            v-model="autoEcole"
+            placeholder="Ajouter une nouvelle auto ecole"
+          />
 
-        <h4 @click="hide">X</h4>
-      </div>
+          <h4 @click="hide">X</h4>
+        </div>
 
-      <submit-button :btnText="'Ajouter'" :type="'button'" />
+        <submit-button :btnText="'Ajouter'" :type="'button'" />
+      </form>
     </div>
   </div>
 </template>
 
 <script>
 import submitButton from "./submitButton.vue";
+import { mapActions } from "vuex";
 export default {
   name: "addAutoEcole",
   components: {
@@ -31,8 +34,28 @@ export default {
   },
 
   methods: {
+    ...mapActions(["addNewAutoEcole"]),
     hide() {
       this.$emit("hideModal");
+    },
+
+    async addNewAuto() {
+      if (this.autoEcole == "") {
+        return;
+      }
+
+      let formatedName = this.autoEcole.toLowerCase();
+
+      formatedName =
+        formatedName.charAt(0).toUpperCase() + formatedName.slice(1);
+
+      const newAuto = {
+        Name: formatedName,
+      };
+
+      await this.addNewAutoEcole(newAuto);
+      this.autoEcole = "";
+      this.hide();
     },
   },
 };
