@@ -16,10 +16,15 @@
         placeholder="Montant "
         v-model="Montant"
       />
-      <select v-model="autoEcole">
-        <option value="0" selected> Auto Ecole</option>
-        <option value="Akka">AKKA</option>
-        <option value="Zguid">ZGUID</option>
+      <select
+        v-model="autoEcole"
+        @focus="focused($event)"
+        @blur="focused($event)"
+      >
+        <option>{{ autoEcole }}</option>
+        <option v-for="auto in autoEcoles" :key="auto._id" :value="auto.Name">
+          {{ auto.Name }}
+        </option>
       </select>
       <input type="date" name="dateCharge" v-model="dateCharge" />
       <submit-button :btnText="'Ajouter'" :type="'submit'" class="btnBlock" />
@@ -30,7 +35,7 @@
 <script>
 import moment from "moment";
 import submitButton from "../shared/submitButton.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   components: { submitButton },
   name: "addCharge",
@@ -40,7 +45,6 @@ export default {
       Libelle: "",
       Montant: "",
       dateCharge: "",
-      autoEcole: "",
     };
   },
 
@@ -63,6 +67,15 @@ export default {
       this.Montant = "";
       this.dateCharge = "";
       this.$emit("reload");
+    },
+  },
+  computed: {
+    ...mapGetters(["allAutoEcoles", "selectedAuto"]),
+    autoEcoles() {
+      return this.allAutoEcoles;
+    },
+    autoEcole() {
+      return this.selectedAuto;
     },
   },
 };

@@ -21,13 +21,21 @@
         <option value="" selected>Jour de l'echeance</option>
         <option v-for="jour in jours" :key="jour.index">{{ jour }}</option>
       </select>
+      <select v-model="autoEcole">
+        <option>{{ autoEcole }}</option>
+
+        <option v-for="auto in autoEcoles" :key="auto._id" :value="auto.Name">
+          {{ auto.Name }}
+        </option>
+        <option value="autres">Autres</option>
+      </select>
       <submit-button :btnText="'Ajouter'" :type="'submit'" class="btnBlock" />
     </form>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import submitButton from "../shared/submitButton.vue";
 
 export default {
@@ -43,6 +51,7 @@ export default {
       errors: [],
     };
   },
+
   methods: {
     changeJour(e) {
       this.jourEcheance = e.target.value;
@@ -74,6 +83,13 @@ export default {
     },
   },
   computed: {
+    ...mapGetters(["selectedAuto", "allAutoEcoles"]),
+    autoEcole() {
+      return this.selectedAuto;
+    },
+    autoEcoles() {
+      return this.allAutoEcoles;
+    },
     jours() {
       const arr = [];
       for (let i = 1; i <= 31; i++) {

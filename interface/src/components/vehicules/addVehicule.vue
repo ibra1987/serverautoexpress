@@ -13,9 +13,10 @@
         @keyup="errors = []"
       />
       <select v-model="autoEcole">
-        <option value="0" selected> Auto Ecole</option>
-        <option value="Akka">AKKA</option>
-        <option value="Zguid">ZGUID</option>
+        <option>{{ autoEcole }}</option>
+        <option v-for="auto in autoEcoles" :key="auto._id" :value="auto.Name">
+          {{ auto.Name }}
+        </option>
       </select>
       <input
         name="dateAssur"
@@ -41,7 +42,7 @@
 
 <script>
 import submitButton from "../shared/submitButton.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   components: { submitButton },
   name: "addVehicule",
@@ -51,10 +52,20 @@ export default {
       Immat: "",
       dateAssur: "",
       dateVisite: "",
-      autoEcole: "",
+
       errors: [],
       success: [],
     };
+  },
+  computed: {
+    ...mapGetters(["selectedAuto", "allAutoEcoles"]),
+    autoEcole() {
+      return this.selectedAuto;
+    },
+
+    autoEcoles() {
+      return this.allAutoEcoles;
+    },
   },
 
   methods: {

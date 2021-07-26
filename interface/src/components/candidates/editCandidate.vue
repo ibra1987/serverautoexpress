@@ -103,8 +103,8 @@
               @blur="focused($event)"
               @change="changeAuto($event)"
             >
+              <option :value="selected"> {{ selected }}</option>
               <option
-                :selected="selectedAuto"
                 v-for="autoEcole in autoEcoles"
                 :key="autoEcole._id"
                 :value="autoEcole.Name"
@@ -169,7 +169,6 @@ export default {
       errors: [],
       candidate: {},
       autoEcoles: [],
-      selected: "",
     };
   },
 
@@ -223,12 +222,18 @@ export default {
       "singleCandidate",
       "allAutoEcoles",
     ]),
+
+    selected() {
+      return this.selectedAuto;
+    },
   },
 
   async created() {
     this.candidate = await this.singleCandidate(this.$route.params.id);
 
     this.autoEcoles = await this.allAutoEcoles;
+
+    console.log(this.selectedAuto);
   },
 };
 </script>

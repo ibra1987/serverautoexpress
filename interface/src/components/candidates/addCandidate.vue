@@ -179,7 +179,6 @@ export default {
 
   data() {
     return {
-      selected: "",
       success: [],
       errors: [],
       autoEcoles: [],
