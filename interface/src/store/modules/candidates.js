@@ -46,21 +46,15 @@ const getters = {
   },
 
   candidatesTotalPrice: (state) => (auto) => {
-    const candidatesAvances = [];
-    const avances = [];
-    state.candidates.map((candidate) => {
-      if (candidate.autoEcole === auto) {
-        candidatesAvances.push(candidate.Avances);
-      }
+    //let avances = [];
+    const autoCandidates = state.candidates.filter(
+      (candidate) => candidate.autoEcole === auto
+    );
+    const candidatesAvances = autoCandidates.map((candidate) => {
+      return candidate.Avances.map((mt) => mt.Montant);
     });
 
-    candidatesAvances.map((avance) => {
-      if (moment(avance.dateAvance).format("MM") === moment().format("MM")) {
-        avances.push(avance.Montant);
-      }
-    });
-
-    return avances.reduce((total, next) => parseInt(total) + parseInt(next));
+    return candidatesAvances;
   },
 };
 

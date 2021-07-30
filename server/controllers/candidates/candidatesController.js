@@ -8,6 +8,7 @@ const {
 const { validationResult } = require("express-validator");
 
 exports.createCandidate = async (req, res) => {
+  req.body.Avances = parseInt(req.body.Avances);
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -24,10 +25,11 @@ exports.createCandidate = async (req, res) => {
     Tel: req.body.Tel,
     Referent: req.body.Referent,
     autoEcole: req.body.autoEcole,
-    Avances: {
-      Montant: req.body.Avances || 0,
-    },
   };
+
+  if (req.body.Avances) {
+    candidate.Avances = parseInt(req.body.Avances);
+  }
   const currentDate = new Date();
 
   let charge;
@@ -66,7 +68,7 @@ exports.createCandidate = async (req, res) => {
     newCharge.save();
     res.status(201).json(newCandidate);
   } catch (error) {
-    res.status(400).json(error);
+    res.status(400).json(error.message);
   }
 };
 

@@ -59,6 +59,7 @@ const candidateSchema = new Schema({
         type: Date,
         default: Date.now,
       },
+      required: false,
     },
   ],
   autoEcole: {

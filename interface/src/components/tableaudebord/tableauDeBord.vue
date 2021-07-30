@@ -26,7 +26,7 @@
         <span class="number">+ {{ candidatsDuMois }}</span>
       </div>
     </div>
-    <div class="card">{{ totalPrice }}</div>
+    <div class="card">{{ sum_array(totalEncaisse) }}</div>
   </div>
 </template>
 
@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       beneficesTotal: 0,
-
+      totalEncaisse: 0,
       totalCharges: 0,
 
       Encaisse: 0,
@@ -49,6 +49,21 @@ export default {
   },
   methods: {
     ...mapActions(["getCharges"]),
+    sum_array(arr) {
+      // store our final answer
+      var sum = 0;
+
+      // loop through entire array
+      for (var i = 0; i < arr.length; i++) {
+        // loop through each inner array
+        for (var j = 0; j < arr[i].length; j++) {
+          // add this number to the current final sum
+          sum += arr[i][j];
+        }
+      }
+
+      return sum;
+    },
   },
   computed: {
     ...mapGetters([
@@ -75,7 +90,7 @@ export default {
 
   async created() {
     await this.getCharges();
-    console.log(this.candidatesTotalPrice(this.selectedAuto));
+    this.totalEncaisse = this.candidatesTotalPrice(this.selectedAuto);
   },
 };
 </script>

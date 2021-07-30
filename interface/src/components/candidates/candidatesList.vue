@@ -131,7 +131,6 @@ export default {
   methods: {
     async triggerAvanceModal() {
       this.showAvance = !this.showAvance;
-      await this.getCandidates();
     },
     manageAvances(id) {
       this.showAvance = !this.showAvance;
