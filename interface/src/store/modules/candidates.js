@@ -20,36 +20,47 @@ const getters = {
     state.candidates.find((candidate) => candidate._id === id),
 
   candidatesSemaine: (state) => (auto) => {
-    const candidates = state.candidates.filter(
-      (candidate) => candidate.autoEcole === auto
-    );
-    const newState = [];
-
-    candidates.map((candidate) => {
-      const debutDeSemaine = moment()
-        .startOf("isoWeek")
-        .format("DD");
-      const finDeSemaine = moment()
-        .endOf("isoWeek")
-        .format("DD");
-
-      const currentYear = moment().format("YYYY");
-      const currentMonth = moment().format("MM");
-      const candidateMonth = moment(candidate.dateEntree).format("MM");
-      const candidateDay = moment(candidate.dateEntree).format("DD");
-
-      if (currentYear === moment(candidate.dateEntree).format("YYYY")) {
-        if (parseInt(currentMonth) === parseInt(candidateMonth)) {
-          if (
-            parseInt(candidateDay) >= parseInt(debutDeSemaine) &&
-            parseInt(candidateDay) <= parseInt(finDeSemaine)
-          ) {
-            newState.push(candidate);
-          }
-        }
+    let newArray = [];
+    state.candidates.map((candidate) => {
+      if (
+        candidate.autoEcole === auto &&
+        moment(candidate.dateEntree).isoWeek() === moment().isoWeek()
+      ) {
+        newArray.push(candidate);
       }
     });
-    return newState;
+    return newArray.length;
+  },
+
+  candidatesMonth: (state) => (auto) => {
+    let newArray = [];
+    state.candidates.map((candidate) => {
+      if (
+        candidate.autoEcole === auto &&
+        moment(candidate.dateEntree).format("MM") === moment().format("MM")
+      ) {
+        newArray.push(candidate);
+      }
+    });
+    return newArray.length;
+  },
+
+  candidatesTotalPrice: (state) => (auto) => {
+    const candidatesAvances = [];
+    const avances = [];
+    state.candidates.map((candidate) => {
+      if (candidate.autoEcole === auto) {
+        candidatesAvances.push(candidate.Avances);
+      }
+    });
+
+    candidatesAvances.map((avance) => {
+      if (moment(avance.dateAvance).format("MM") === moment().format("MM")) {
+        avances.push(avance.Montant);
+      }
+    });
+
+    return avances.reduce((total, next) => parseInt(total) + parseInt(next));
   },
 };
 

@@ -16,6 +16,7 @@ exports.createEcheance = async (req, res) => {
   const newEcheance = {
     Libelle: req.body.Libelle,
     jourEcheance: req.body.jourEcheance,
+    autoEcole: req.body.autoEcole,
   };
 
   try {
@@ -26,9 +27,17 @@ exports.createEcheance = async (req, res) => {
 };
 
 exports.getEcheances = async (req, res) => {
-  await readRecords(req, res, echeanceModel);
+  try {
+    await readRecords(req, res, echeanceModel);
+  } catch (error) {
+    res.status(400).json(error);
+  }
 };
 
 exports.deleteEcheance = async (req, res) => {
-  await deleteRecord(req, res, echeanceModel);
+  try {
+    await deleteRecord(req, res, echeanceModel);
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };

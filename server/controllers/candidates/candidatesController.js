@@ -2,7 +2,6 @@ const candidateModel = require("../../models/Candidate");
 const chargeModel = require("../../models/Charge");
 const {
   readRecords,
-  createRecord,
   readOneRecord,
   deleteRecord,
 } = require("../../config/data");
@@ -47,21 +46,25 @@ exports.createCandidate = async (req, res) => {
   if (currentDate.getMonth() < 10) {
     mois = `0${currentDate.getMonth() + 1}`;
   }
-  const fraisDossier = {
-    Libelle: `frais dossier:${candidate.Fname} ${candidate.Lname}`,
-    Montant: charge,
-    dateCharge: {
-      Day: jour,
-      Month: mois,
-      Year: currentDate.getFullYear(),
-    },
-  };
-
-  const newCharge = new chargeModel(fraisDossier);
 
   try {
-    await createRecord(req, res, candidateModel, candidate);
-    await newCharge.save();
+    const newCandidate = new candidateModel(candidate);
+    await newCandidate.save();
+    const fraisDossier = {
+      Libelle: `frais dossier: ${newCandidate.Fname} ${newCandidate.Lname}`,
+      Montant: charge,
+      dateCharge: {
+        Day: jour,
+        Month: mois,
+        Year: currentDate.getFullYear(),
+      },
+      autoEcole: candidate.autoEcole || "Akka",
+      candidate: newCandidate._id,
+    };
+
+    const newCharge = new chargeModel(fraisDossier);
+    newCharge.save();
+    res.status(201).json(newCandidate);
   } catch (error) {
     res.status(400).json(error);
   }

@@ -19,8 +19,12 @@ exports.createVehicule = async (req, res) => {
     dateVisite: req.body.dateVisite,
     autoEcole: req.body.autoEcole,
   };
-  const response = await createRecord(req, res, vehiculeModel, newVehicule);
-  res.status(201).json(response);
+  try {
+    const response = await createRecord(req, res, vehiculeModel, newVehicule);
+    res.status(201).json(response);
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
 
 exports.getVehicules = async (req, res) => {

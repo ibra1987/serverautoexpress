@@ -181,7 +181,7 @@ export default {
     return {
       success: [],
       errors: [],
-      autoEcoles: [],
+
       candidate: {
         Fname: "",
         Lname: "",
@@ -199,9 +199,9 @@ export default {
 
   computed: {
     ...mapGetters(["allAutoEcoles"]),
-  },
-  async created() {
-    this.autoEcoles = await this.allAutoEcoles;
+    autoEcoles() {
+      return this.allAutoEcoles;
+    },
   },
 
   methods: {
@@ -219,12 +219,12 @@ export default {
 
     validate() {
       if (
-        this.candidate.Fname == "" ||
-        this.candidate.Lname == "" ||
-        this.candidate.Cin == "" ||
-        this.candidate.Price == "" ||
-        this.candidate.Categorie == "" ||
-        this.candidate.autoEcole == ""
+        this.candidate.Fname === "" ||
+        this.candidate.Lname === "" ||
+        this.candidate.Cin === "" ||
+        this.candidate.Price === "" ||
+        this.candidate.Categorie === "" ||
+        this.candidate.autoEcole === ""
       ) {
         if (!this.errors.length) {
           this.errors.push("Merci de remplir tous les champs obligators");

@@ -5,4 +5,5 @@ exports.echeancesValidator = [
   check("jourEcheance", "Merci de remplir le  champs date echeance")
     .not()
     .isEmpty(),
+  check("autoEcole", "Merci de remplir le  champs auto ecole").not().isEmpty(),
 ];

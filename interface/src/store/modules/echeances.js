@@ -6,7 +6,8 @@ const state = {
 };
 
 const getters = {
-  allEcheances: (state) => state.echeances,
+  allEcheances: (state) => (auto) =>
+    state.echeances.filter((echeance) => echeance.autoEcole === auto),
 };
 const actions = {
   getEcheances: async ({ commit }) => {

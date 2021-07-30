@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 const baseUrl = "http://localhost:3001/charges";
 
 const state = {
@@ -13,6 +14,19 @@ const getters = {
         monthCharges.dateCharge.Month === String(month) &&
         monthCharges.dateCharge.Year === String(year) &&
         monthCharges.autoEcole === auto
+    );
+  },
+
+  chargesMonth: (state) => (auto) => {
+    const montants = state.charges.filter(
+      (charge) =>
+        charge.autoEcole === auto &&
+        charge.dateCharge.Month === moment().format("MM")
+    );
+
+    return montants.reduce(
+      (total, next) => parseInt(total) + parseInt(next.Montant),
+      0
     );
   },
 };

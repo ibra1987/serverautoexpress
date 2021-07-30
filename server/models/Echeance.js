@@ -14,6 +14,10 @@ const echeanceSchema = new Schema({
     required: true,
     length: 2,
   },
+  autoEcole: {
+    type: String,
+    require: true,
+  },
 });
 
 module.exports = echeanceModel = mongoose.model("echeance", echeanceSchema);

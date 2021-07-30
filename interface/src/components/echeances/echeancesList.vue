@@ -70,10 +70,9 @@ export default {
             currentDate.getFullYear()
           ) {
             if (
-              moment(echeanceDate, "DD-MM-YYYY").format("m") ===
-              currentDate.getMonth() + 1
-            );
-            {
+              parseInt(moment(echeanceDate, "DD-MM-YYYY").format("M")) ===
+              parseInt(currentDate.getMonth() + 1)
+            ) {
               if (
                 parseInt(moment(echeanceDate, "DD-MM-YYYY").date()) -
                   parseInt(currentDate.getDate()) <=
@@ -117,10 +116,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["allEcheances"]),
+    ...mapGetters(["allEcheances", "selectedAuto"]),
 
     echeances() {
-      return this.allEcheances;
+      return this.allEcheances(this.selectedAuto);
     },
   },
   async created() {

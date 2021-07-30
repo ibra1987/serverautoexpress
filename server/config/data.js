@@ -23,9 +23,9 @@ exports.readRecords = async (req, res, model) => {
       return res.status(200).json(models);
     }
 
-    return res.status(400).json({ msg: "pas d'enregistrements" });
+    return res.status(400).json({ msg: error.message });
   } catch (error) {
-    return res.status(500).json({ Error: "Server error" });
+    return res.status(500).json({ Error: error.message });
   }
 };
 
@@ -36,23 +36,29 @@ exports.readOneRecord = async (req, res, model) => {
 
     if (record) return res.status(200).json(record);
 
-    return res.status(404).json({ msg: "pas d'enregistrement" });
+    return res.status(404).json({ error: error.message });
   } catch (error) {
-    return res.status(404).json({ msg: "pas d'enregistrement" });
+    return res.status(404).json({ error: error.message });
   }
 };
 
 //update a record
 exports.updateRecord = async (req, res, model) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  const obj = req.body;
-  if (!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).json({ msg: "pas d'enregistrement" });
+    const obj = req.body;
+    if (!mongoose.Types.ObjectId.isValid(id))
+      return res.status(404).json({ msg: "pas d'enregistrement" });
 
-  const updated = await model.findByIdAndUpdate(id.trim(), obj, { new: true });
+    const updated = await model.findByIdAndUpdate(id.trim(), obj, {
+      new: true,
+    });
 
-  return res.json(updated);
+    return res.json(updated);
+  } catch (error) {
+    res.status(res.response.status).json({ error: error });
+  }
 };
 
 //delete a record
@@ -67,6 +73,6 @@ exports.deleteRecord = async (req, res, model) => {
 
     return res.status(200).json(deleted);
   } catch (error) {
-    res.status(404).json(error.message);
+    res.status(404).json({ error: error.message });
   }
 };

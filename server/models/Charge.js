@@ -30,6 +30,9 @@ const chargeSchema = new Schema({
     type: String,
     required: true,
   },
+  candidate: [
+    { type: Schema.Types.ObjectId, ref: "candidate", required: false },
+  ],
 });
 
 module.exports = chargeModel = mongoose.model("charge", chargeSchema);

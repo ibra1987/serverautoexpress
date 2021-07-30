@@ -47,6 +47,7 @@ export default {
     return {
       Libelle: "",
       jourEcheance: "",
+      autoEcole: "",
       success: [],
       errors: [],
     };
@@ -69,6 +70,7 @@ export default {
       const newEcheance = {
         Libelle: this.Libelle,
         jourEcheance: this.jourEcheance,
+        autoEcole: this.autoEcole,
       };
 
       this.createEcheance(newEcheance);
@@ -84,9 +86,7 @@ export default {
   },
   computed: {
     ...mapGetters(["selectedAuto", "allAutoEcoles"]),
-    autoEcole() {
-      return this.selectedAuto;
-    },
+
     autoEcoles() {
       return this.allAutoEcoles;
     },
@@ -100,6 +100,10 @@ export default {
       }
       return arr;
     },
+  },
+
+  created() {
+    this.autoEcole = this.selectedAuto;
   },
 };
 </script>
