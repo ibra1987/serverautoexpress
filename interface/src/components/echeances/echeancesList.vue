@@ -5,6 +5,14 @@
         Liste echeances
       </h2>
     </div>
+    <div></div>
+    <div class="addBtnContainer btnToLeft">
+      <router-link to="/echeances/create" class="button"
+        >Nouvelle echeance
+      </router-link>
+
+      <router-view> </router-view>
+    </div>
     <div class="echeances">
       <table>
         <th>
@@ -34,20 +42,17 @@
           </tr>
         </tbody>
       </table>
-      <add-echeance class="addComponent" />
     </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import addEcheance from "./addEcheance.vue";
+
 import moment from "moment";
 export default {
   name: "echeancesList",
-  components: {
-    addEcheance,
-  },
+  components: {},
   data() {
     return {
       closestEcheance: false,
@@ -134,7 +139,7 @@ export default {
   color: red !important;
 }
 .echeancesContainer {
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -144,7 +149,7 @@ export default {
 .echeances {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-start;
   margin-top: 5vh;
 }

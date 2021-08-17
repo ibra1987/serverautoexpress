@@ -4,6 +4,7 @@ import moment from "moment";
 const baseUrl = "http://localhost:3001/candidates";
 const state = {
   candidates: [],
+  Avances: [],
 };
 
 const getters = {
@@ -15,6 +16,7 @@ const getters = {
 
     return newState;
   },
+  allAvances: (state) => state.Avances,
 
   singleCandidate: (state) => (id) =>
     state.candidates.find((candidate) => candidate._id === id),
@@ -44,21 +46,83 @@ const getters = {
     });
     return newArray.length;
   },
+  candidatesYear: (state) => (auto) => {
+    let newArray = [];
+    state.candidates.map((candidate) => {
+      if (
+        candidate.autoEcole === auto &&
+        moment(candidate.dateEntree).format("YYYY") === moment().format("YYYY")
+      ) {
+        newArray.push(candidate);
+      }
+    });
+    return newArray.length;
+  },
 
-  candidatesTotalPrice: (state) => (auto) => {
+  encaisseThisWeek: (state) => {
     //let avances = [];
-    const autoCandidates = state.candidates.filter(
-      (candidate) => candidate.autoEcole === auto
-    );
-    const candidatesAvances = autoCandidates.map((candidate) => {
-      return candidate.Avances.map((mt) => mt.Montant);
+
+    let avances = [];
+    state.Avances.map((candidateAvances) => {
+      candidateAvances.Avances.map((av) => {
+        if (
+          moment(av.dateAvance).isoWeek() === moment().isoWeek() &&
+          av.Montant != null
+        ) {
+          avances.push(av.Montant);
+        }
+      });
     });
 
-    return candidatesAvances;
+    return avances.reduce((tot, next) => parseInt(tot) + parseInt(next), 0);
+
+    // return weekAvances.reduce((tot, next) => {
+    //   parseInt(tot) + parseInt(next.Montant);
+    // }, 0);
+  },
+
+  encaisseThisMonth: (state) => {
+    let avances = [];
+    state.Avances.map((candidateAvances) => {
+      candidateAvances.Avances.map((av) => {
+        if (
+          moment(av.dateAvance).format("MM") === moment().format("MM") &&
+          av.Montant != null
+        ) {
+          avances.push(av.Montant);
+        }
+      });
+    });
+
+    return avances.reduce((tot, next) => parseInt(tot) + parseInt(next), 0);
+  },
+  encaisseThisYear: (state) => {
+    let avances = [];
+    state.Avances.map((candidateAvances) => {
+      candidateAvances.Avances.map((av) => {
+        if (
+          moment(av.dateAvance).format("YYYY") === moment().format("YYYY") &&
+          av.Montant != null
+        ) {
+          avances.push(av.Montant);
+        }
+      });
+    });
+
+    return avances.reduce((tot, next) => parseInt(tot) + parseInt(next), 0);
   },
 };
 
 const actions = {
+  getAllAvances: async ({ commit }, auto) => {
+    try {
+      const response = await axios.get(`${baseUrl}/avances/${auto}`);
+
+      if (response.status === 200) commit("avancesLoaded", response.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  },
   // get all recors
   getCandidates: async ({ commit }) => {
     const response = await axios.get(`${baseUrl}`);
@@ -151,6 +215,8 @@ const mutations = {
       return candidate;
     });
   },
+
+  avancesLoaded: (state, avances) => (state.Avances = avances),
 };
 
 export default {

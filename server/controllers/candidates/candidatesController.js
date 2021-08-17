@@ -1,19 +1,17 @@
 const candidateModel = require("../../models/Candidate");
 const chargeModel = require("../../models/Charge");
-const {
-  readRecords,
-  readOneRecord,
-  deleteRecord,
-} = require("../../config/data");
+
+const { readRecords, readOneRecord } = require("../../config/data");
 const { validationResult } = require("express-validator");
+const mongoose = require("mongoose");
 
 exports.createCandidate = async (req, res) => {
-  req.body.Avances = parseInt(req.body.Avances);
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
     return res.json({ errors: errors.array() });
   }
+
   const candidate = {
     Fname: req.body.Fname,
     Lname: req.body.Lname,
@@ -25,47 +23,47 @@ exports.createCandidate = async (req, res) => {
     Tel: req.body.Tel,
     Referent: req.body.Referent,
     autoEcole: req.body.autoEcole,
+    // Avances: {},
   };
 
-  if (req.body.Avances) {
-    candidate.Avances = parseInt(req.body.Avances);
-  }
-  const currentDate = new Date();
-
-  let charge;
-
-  if (candidate.Extension) {
-    charge = 650;
-  } else {
-    charge = 700;
+  if (req.body.Avance !== "" && req.body.Avance) {
+    candidate.Avances = {
+      Montant: parseInt(req.body.Avance),
+    };
   }
 
-  let jour = currentDate.getDate();
-  let mois = currentDate.getMonth() + 1;
-  if (currentDate.getDate() < 10) {
-    jour = `0${currentDate.getDate()}`;
-  }
-  if (currentDate.getMonth() < 10) {
-    mois = `0${currentDate.getMonth() + 1}`;
-  }
+  // let charge;
+
+  // if (!candidate.Extension === "true") {
+  //   charge = 700;
+  // } else {
+  //   charge = 650;
+  // }
+
+  // let jour = currentDate.getDate();
+  // let mois = currentDate.getMonth() + 1;
+
+  // if (currentDate.getDate() < 10) {
+  //   jour = `0${currentDate.getDate()}`;
+  // }
+  // if (currentDate.getMonth() < 10) {
+  //   mois = `0${currentDate.getMonth() + 1}`;
+  // }
 
   try {
     const newCandidate = new candidateModel(candidate);
     await newCandidate.save();
-    const fraisDossier = {
-      Libelle: `frais dossier: ${newCandidate.Fname} ${newCandidate.Lname}`,
-      Montant: charge,
-      dateCharge: {
-        Day: jour,
-        Month: mois,
-        Year: currentDate.getFullYear(),
-      },
-      autoEcole: candidate.autoEcole || "Akka",
-      candidate: newCandidate._id,
-    };
 
-    const newCharge = new chargeModel(fraisDossier);
-    newCharge.save();
+    // const fraisDossier = {
+    //   Libelle: `frais dossier: ${newCandidate.Fname} ${newCandidate.Lname}`,
+    //   Montant: charge,
+    //   autoEcole: candidate.autoEcole || "Akka",
+    //   candidate: newCandidate._id,
+    // };
+
+    // const newCharge = new chargeModel(fraisDossier);
+
+    // await newCharge.save();
     res.status(201).json(newCandidate);
   } catch (error) {
     res.status(400).json(error.message);
@@ -174,9 +172,32 @@ exports.deleteAvance = async (req, res) => {
 };
 
 exports.deleteCandidate = async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(404).json({ msg: "pas d'enregistrement" });
+
   try {
-    await deleteRecord(req, res, candidateModel);
+    const deleted = await candidateModel.findByIdAndDelete(id.trim());
+    await chargeModel.deleteOne({ candidate: id.trim() });
+
+    return res.status(200).json(deleted);
   } catch (error) {
-    res.status(404).json(error);
+    res.status(404).json({ error: error.message });
+  }
+};
+
+exports.getAvances = async (req, res) => {
+  let auto = req.params.auto.toLowerCase();
+
+  auto = auto.charAt(0).toUpperCase() + auto.slice(1);
+
+  try {
+    const avances = await candidateModel
+      .find({ autoEcole: auto })
+      .select({ Avances: 1, _id: 0 });
+
+    res.status(200).json(avances);
+  } catch (error) {
+    res.status(404).json(error.message);
   }
 };

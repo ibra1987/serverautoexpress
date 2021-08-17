@@ -5,6 +5,13 @@
         Gestion des véhicules
       </h2>
     </div>
+    <div class="addBtnContainer btnToLeft">
+      <router-link to="/vehicules/create" class="button"
+        >Nouveau vehicule
+      </router-link>
+
+      <router-view> </router-view>
+    </div>
     <div class="vehicules">
       <table>
         <th>
@@ -34,20 +41,15 @@
           </tr>
         </tbody>
       </table>
-
-      <add-vehicule class="addComponent" />
     </div>
   </div>
 </template>
 
 <script>
-import addVehicule from "./addVehicule.vue";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "vehiculesList",
-  components: {
-    addVehicule,
-  },
+  components: {},
 
   methods: {
     ...mapActions(["getVehicules", "removeVehicule"]),
@@ -90,13 +92,18 @@ export default {
 .deleteContainer {
   position: relative;
 }
+.btnToLeft {
+  width: 90%;
+  padding-top: 3vh !important;
+  justify-content: flex-start !important;
+}
 .deleteContainer i {
   position: absolute;
   top: 5px;
   right: 5px;
 }
 .vehiculesContainer {
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -106,8 +113,8 @@ export default {
 .vehicules {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-start;
-  margin-top: 5vh;
+  margin-top: 2vh;
 }
 </style>

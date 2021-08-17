@@ -43,7 +43,7 @@
               @blur="focused($event)"
               type="text"
               class="input fullName"
-              v-model="candidate.Fname"
+              v-model="Fname"
               placeholder="Prénom"
             />
             <input
@@ -51,7 +51,7 @@
               @blur="focused($event)"
               type="text"
               class="input fullName"
-              v-model="candidate.Lname"
+              v-model="Lname"
               placeholder="Nom"
             />
           </div>
@@ -62,7 +62,7 @@
               @blur="focused($event)"
               type="text"
               class="input"
-              v-model="candidate.Cin"
+              v-model="Cin"
               placeholder="N° de Cin"
             />
           </div>
@@ -72,7 +72,7 @@
               @blur="focused($event)"
               type="text"
               class="input"
-              v-model="candidate.Adresse"
+              v-model="Adresse"
               placeholder="Adresse"
             />
           </div>
@@ -82,7 +82,7 @@
               @blur="focused($event)"
               type="text"
               class="input"
-              v-model="candidate.tel"
+              v-model="Tel"
               placeholder="N° de tel"
             />
           </div>
@@ -90,7 +90,7 @@
         <div class="rightSide">
           <div class="selectDiv">
             <select
-              v-model="candidate.Categorie"
+              v-model="Categorie"
               @focus="focused($event)"
               @blur="focused($event)"
             >
@@ -102,7 +102,7 @@
               <option value="EC">EC</option>
             </select>
             <select
-              v-model="candidate.autoEcole"
+              v-model="autoEcole"
               @focus="focused($event)"
               @blur="focused($event)"
             >
@@ -116,7 +116,7 @@
               </option>
             </select>
             <select
-              v-model="candidate.Extension"
+              v-model="Extension"
               @focus="focused($event)"
               @blur="focused($event)"
             >
@@ -132,7 +132,7 @@
               @blur="focused($event)"
               class="input"
               type="Number"
-              v-model="candidate.Price"
+              v-model="Price"
               placeholder="Prix"
             />
           </div>
@@ -144,7 +144,7 @@
               type="number"
               class="input"
               placeholder="Avance"
-              v-model="candidate.Avances"
+              v-model="Avance"
             />
           </div>
           <div class="inputDiv">
@@ -153,7 +153,7 @@
               @blur="focused($event)"
               class="input"
               type="text"
-              v-model="candidate.Referent"
+              v-model="Referent"
               placeholder="Referent"
             />
           </div>
@@ -182,18 +182,17 @@ export default {
       success: [],
       errors: [],
 
-      candidate: {
-        Fname: "",
-        Lname: "",
-        Cin: "",
-        Adresse: "",
-        Categorie: "Catégorie",
-        Price: "",
-        Referent: "",
-        Tel: "",
-        Extension: false,
-        autoEcole: "Auto Ecole",
-      },
+      Fname: "",
+      Lname: "",
+      Cin: "",
+      Adresse: "",
+      Categorie: "Catégorie",
+      Price: "",
+      Referent: "",
+      Tel: "",
+      Extension: false,
+      autoEcole: "Auto Ecole",
+      Avance: "",
     };
   },
 
@@ -219,12 +218,12 @@ export default {
 
     validate() {
       if (
-        this.candidate.Fname === "" ||
-        this.candidate.Lname === "" ||
-        this.candidate.Cin === "" ||
-        this.candidate.Price === "" ||
-        this.candidate.Categorie === "" ||
-        this.candidate.autoEcole === ""
+        this.Fname === "" ||
+        this.Lname === "" ||
+        this.Cin === "" ||
+        this.Price === "" ||
+        this.Categorie === "" ||
+        this.autoEcole === ""
       ) {
         if (!this.errors.length) {
           this.errors.push("Merci de remplir tous les champs obligators");
@@ -234,13 +233,38 @@ export default {
         }, 4000);
       }
 
-      if (isNaN(this.candidate.Price)) {
+      if (isNaN(this.Price)) {
         return "le prix doit etre un chiffre";
       }
 
-      this.addCandidate(this.candidate);
+      const newCandidate = {
+        Fname: this.Fname,
+        Lname: this.Lname,
+        Cin: this.Cin,
+        Adresse: this.Adresse,
+        Categorie: this.Categorie,
+        Price: this.Price,
+        Referent: this.Referent,
+        Tel: this.Tel,
+        Extension: this.Extension,
+        autoEcole: this.autoEcole,
+        Avance: this.Avance,
+      };
+
+      this.addCandidate(newCandidate);
       this.$emit("hideme");
-      this.candidate = {};
+      this.Fname = "";
+      this.Lname = "";
+      this.Cin = "";
+      this.Adresse = "";
+      this.Categorie = "Catégorie";
+      this.Price = "";
+      this.Referent = "";
+      this.Tel = "";
+      this.Extension = false;
+      this.autoEcole = "Auto Ecole";
+      this.Avance = "";
+
       if (!this.success.length) {
         this.success.push("enregistré avec succès");
       }

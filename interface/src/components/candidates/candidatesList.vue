@@ -29,10 +29,12 @@
           v-for="candidate in candidates"
           :key="candidate._id"
           :class="
-            candidate.Price ===
-            candidate.Avances.reduce((sum, value) => {
-              return sum + parseInt(value.Montant);
-            }, 0)
+            parseInt(candidate.Price) ==
+            parseInt(
+              candidate.Avances.reduce((sum, value) => {
+                return parseInt(sum) + parseInt(value.Montant);
+              }, 0)
+            )
               ? 'paid'
               : ''
           "
@@ -65,13 +67,7 @@
               "
               @click="manageAvances(candidate._id)"
             >
-              {{
-                candidate.Avances
-                  ? candidate.Avances.reduce((sum, value) => {
-                      return sum + parseInt(value.Montant);
-                    }, 0)
-                  : 0
-              }}
+              {{ candidate.Avances.length ? sumAvances(candidate.Avances) : 0 }}
             </span>
           </td>
           <td class="operationsContainer">
@@ -129,7 +125,18 @@ export default {
   },
 
   methods: {
-    async triggerAvanceModal() {
+    parseInt(x) {
+      return parseInt(x);
+    },
+    sumAvances(arr) {
+      return arr.reduce((sum, value) => {
+        if (value.Montant > 0) {
+          return parseInt(sum) + parseInt(value.Montant);
+        }
+        return 0;
+      }, 0);
+    },
+    triggerAvanceModal() {
       this.showAvance = !this.showAvance;
     },
     manageAvances(id) {
@@ -225,11 +232,11 @@ td {
   padding: 1vh;
 }
 
-th {
+/* th {
   background-color: #292b2c;
   color: rgb(255, 255, 255);
   border-left: 1px solid white;
-}
+} */
 .operationsContainer {
   display: flex;
   justify-content: space-around;

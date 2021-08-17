@@ -1,9 +1,14 @@
 <template>
-  <div class="addChargeFormContainer">
-    <div class="formHeader">
-      Ajouter un vehicule
-    </div>
+  <div class="addFormContainer">
     <form method="post" @submit.prevent="addVehicule">
+      <div class="close">
+        <router-link to="/vehicules">
+          Fermer X
+        </router-link>
+      </div>
+      <div class="formHeader">
+        Ajouter un vehicule
+      </div>
       <input
         type="text"
         name="Immat"
@@ -12,7 +17,7 @@
         :class="errors.length > 0 ? 'error' : ''"
         @keyup="errors = []"
       />
-      <select v-model="autoEcole">
+      <select v-model="auto">
         <option>{{ autoEcole }}</option>
         <option v-for="auto in autoEcoles" :key="auto._id" :value="auto.Name">
           {{ auto.Name }}
@@ -26,7 +31,7 @@
         :class="errors.length > 0 ? 'error' : ''"
         @keyup="errors = []"
       />
-      />
+
       <input
         name="dateVisite"
         v-model="dateVisite"
@@ -52,6 +57,7 @@ export default {
       Immat: "",
       dateAssur: "",
       dateVisite: "",
+      auto: "",
 
       errors: [],
       success: [],
@@ -85,6 +91,7 @@ export default {
         Immat: this.Immat,
         dateAssur: this.dateAssur,
         dateVisite: this.dateVisite,
+        autoEcole: this.auto,
       };
 
       this.addNewVehicule(newVehicule);
@@ -95,6 +102,7 @@ export default {
       this.Immat = "";
       this.dateVisite = "";
       this.dateAssur = "";
+      this.auto = this.autoEcole;
     },
     ...mapActions(["addNewVehicule"]),
   },
@@ -102,44 +110,29 @@ export default {
 </script>
 
 <style scoped>
-.formHeader {
-  color: #292b2c;
-  width: 100%;
-  padding: 2vh 0;
-  background-color: #ffbb33;
-}
-
-.error {
-  border: 1px solid crimson;
-}
-.btnBlock {
-  width: 100%;
-  background-color: #ffbb33;
-  color: #292b2c;
-}
-.addChargeFormContainer {
+form {
+  width: 30%;
+  height: 80%;
   display: flex;
   flex-direction: column;
-  padding: 5px;
   justify-content: center;
   align-items: center;
-  background-color: #292b2c;
+  background-color: white;
+  border-radius: 0.3em;
 }
-form {
-  margin-top: 4vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
+@media screen and (max-width: 1200) {
+  form {
+    width: 95%;
+  }
 }
 
 input,
 select {
-  margin: 10px;
-  padding: 1vh 5px;
-  width: 100%;
+  padding: 2vh 1vw;
+  width: 80%;
   border: none;
   background-color: rgb(243, 243, 243);
   outline: none;
+  margin: 2vh 1vw;
 }
 </style>

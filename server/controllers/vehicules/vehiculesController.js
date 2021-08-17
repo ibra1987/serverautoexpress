@@ -1,9 +1,5 @@
 const vehiculeModel = require("../../models/Vehicule");
-const {
-  createRecord,
-  deleteRecord,
-  readRecords,
-} = require("../../config/data");
+const { createRecord, deleteRecord } = require("../../config/data");
 const { validationResult } = require("express-validator");
 
 exports.createVehicule = async (req, res) => {

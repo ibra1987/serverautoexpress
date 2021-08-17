@@ -34,6 +34,7 @@ exports.getCharges = async (req, res) => {
 exports.deleteCharge = async (req, res) => {
   try {
     const response = await deleteRecord(req, res, chargeModel);
+    res.json(resonse);
   } catch (error) {
     res.status(404).json(error);
   }

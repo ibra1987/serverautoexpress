@@ -1,9 +1,14 @@
 <template>
-  <div class="addEcheanceFormContainer">
-    <div class="formHeader">
-      Ajouter une echeance
-    </div>
+  <div class="addFormContainer">
     <form method="post" @submit.prevent="addNewEcheance">
+      <div class="close">
+        <router-link to="/echeances">
+          Fermer X
+        </router-link>
+      </div>
+      <div class="formHeader">
+        Ajouter une echeance
+      </div>
       <input
         type="text"
         name="Libelle"
@@ -120,40 +125,30 @@ export default {
 .error {
   border: 1px solid crimson;
 }
-.btnBlock {
-  width: 100%;
-  background-color: #ffbb33;
-  color: #292b2c;
-}
-.addChargeFormContainer {
+
+form {
+  width: 30%;
+  height: 80%;
   display: flex;
   flex-direction: column;
-  padding: 5px;
   justify-content: center;
   align-items: center;
-  background-color: #292b2c;
+  background-color: white;
+  border-radius: 0.3em;
 }
-form {
-  margin-top: 4vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
+@media screen and (max-width: 1200) {
+  form {
+    width: 95%;
+  }
 }
 
 input,
 select {
-  margin: 10px;
-  padding: 1vh 5px;
-  width: 100%;
+  padding: 2vh 1vw;
+  width: 80%;
   border: none;
   background-color: rgb(243, 243, 243);
   outline: none;
-}
-.formHeader {
-  color: #292b2c;
-  width: 100%;
-  padding: 2vh 0;
-  background-color: #ffbb33;
+  margin: 2vh 1vw;
 }
 </style>

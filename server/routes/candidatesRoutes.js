@@ -7,6 +7,7 @@ const {
   deleteAvance,
   updateCandidate,
   addNewAvance,
+  getAvances,
 } = require("../controllers/candidates/candidatesController");
 const {
   candidatesValidator,
@@ -22,6 +23,10 @@ router.post("/update/:id", candidatesValidator, updateCandidate);
 //@post new avanc e
 
 router.post("/avances", addNewAvance);
+
+//@GET AVANCES FOR ONE AUTO
+
+router.get("/avances/:auto", getAvances);
 
 //@delete avance
 

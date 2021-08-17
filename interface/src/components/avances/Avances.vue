@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="avancesTable">
-        <table>
+        <table v-if="candidate.Avances.length">
           <thead>
             <th>
               Avance
@@ -47,14 +47,15 @@
           </thead>
           <tbody>
             <tr v-for="Avance in candidate.Avances" :key="Avance.id">
-              <td>
+              <td v-if="Avance.Montant > 0">
                 {{ Avance.Montant }}
               </td>
-              <td>
-                {{ Avance.dateAvance | moment("DD-MM-YYYY") }}
+              <td v-if="Avance.Montant > 0">
+                {{ formatDate(Avance.dateAvance) }}
               </td>
               <td>
                 <i
+                  v-if="Avance.Montant > 0"
                   @click="confirmation(Avance._id)"
                   class="fas fa-trash-alt"
                 ></i>
@@ -78,6 +79,8 @@
 import submitButton from "../shared/submitButton.vue";
 import axios from "axios";
 import { mapActions, mapGetters } from "vuex";
+import moment from "moment";
+//import moment from "moment";
 export default {
   name: "Avances",
   props: ["id"],
@@ -95,7 +98,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["addNewAvance", "deleteAvance"]),
+    ...mapActions(["addNewAvance", "deleteAvance", "getAllAvances"]),
     confirmation(cid) {
       if (confirm("Etes vous sur de vouloir supprimer?")) {
         this.removeAvance(cid);
@@ -131,6 +134,7 @@ export default {
           id: this.id,
         };
         this.$store.commit("avanceAdded", payload);
+        this.getAllAvances(this.selectedAuto);
         this.newAvance = [];
       }
 
@@ -138,28 +142,33 @@ export default {
         this.success.push("Avance ajoutée avec succès");
         return setTimeout(() => {
           this.success = [];
-        }, 4000);
+          this.$emit("hideAvances");
+        }, 2000);
       }
     },
 
-    removeAvance(avid) {
+    async removeAvance(avid) {
       if (avid) {
         const payload = {
           cid: this.id,
           avid,
         };
-        if (this.deleteAvance(payload))
-          this.success.push(" Avance supprimée avec succèss");
+        await this.deleteAvance(payload);
+        await this.getAllAvances(this.selectedAuto);
+        this.success.push(" Avance supprimée avec succèss");
         setTimeout(() => {
           this.success = [];
-          this.$emit("hideAvances");
         }, 2000);
       }
+    },
+
+    formatDate(somDate) {
+      return moment(somDate).format("DD-MM-YYYY");
     },
   },
 
   computed: {
-    ...mapGetters(["singleCandidate"]),
+    ...mapGetters(["singleCandidate", "selectedAuto"]),
 
     candidate() {
       return this.singleCandidate(this.id);

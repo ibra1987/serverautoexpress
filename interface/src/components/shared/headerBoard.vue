@@ -33,10 +33,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(["selectNewAuto", "getAutoEcoles"]),
+    ...mapActions(["selectNewAuto", "getAutoEcoles", "getAllAvances"]),
     changeAuto(e) {
       this.selectNewAuto(e.target.value);
       this.selected = e.target.value;
+      this.getAllAvances(this.selected);
     },
     hideModal() {
       this.showAutoForm = false;
@@ -67,7 +68,7 @@ export default {
   width: 100%;
   padding: 8vh 0;
   color: white;
-  background-color: #292b2c;
+  background-color: #5a71f0;
   margin-bottom: 20px;
   /* position: relative; */
 }

@@ -57,7 +57,7 @@ const candidateSchema = new Schema({
       Montant: Number,
       dateAvance: {
         type: Date,
-        default: Date.now,
+        default: Date,
       },
       required: false,
     },
@@ -68,7 +68,7 @@ const candidateSchema = new Schema({
   },
   dateEntree: {
     type: Date,
-    default: Date.now,
+    default: Date,
   },
 });
 

@@ -4,7 +4,7 @@
       <my-header />
 
       <navBar />
-      <router-view />
+      <router-view> </router-view>
     </div>
   </div>
 </template>
@@ -31,10 +31,45 @@ export default {
 </script>
 
 <style>
+.addBtnContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.addFormContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgb(0, 0, 0, 0.6);
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+}
+.btnBlock {
+  padding: 2vh;
+  width: 80%;
+
+  color: #ffffff;
+}
+.error {
+  border: 1px solid crimson !important;
+}
+.formHeader {
+  color: #ffffff;
+  background-color: #5a71f0;
+  width: 80%;
+  padding: 2vh 0;
+  margin: 2vh 0;
+}
 body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  background-color: rgb(235, 231, 231);
 }
 table {
   width: 90%;
@@ -47,12 +82,9 @@ td {
   text-align: center;
   padding: 1vh;
 }
-.addComponent {
-  width: 30%;
-  border-radius: 2px;
-}
+
 th {
-  background-color: #292b2c;
+  background-color: #5a71f0;
   color: rgb(255, 255, 255);
   border-left: 1px solid white;
 }
@@ -60,6 +92,37 @@ th {
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+.btnToLeft {
+  width: 90%;
+  padding-top: 3vh !important;
+  justify-content: flex-start !important;
+}
+button,
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10vw;
+  padding: 1vh 1vw;
+  background-color: #33b5e5;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+  font-size: 0.9rem;
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 3px;
+  margin: 20px;
+}
+@media screen and (max-width: 1200px) {
+  .button,
+  button {
+    width: 60%;
+  }
+  table {
+    width: 95%;
+  }
 }
 
 tr:nth-child(even) {
@@ -110,5 +173,18 @@ tr:nth-child(even) {
   width: 80%;
   margin: auto;
   padding: 0 10px;
+}
+
+@media screen and (max-width: 1200) {
+  .container {
+    width: 95%;
+  }
+}
+.close {
+  position: absolute;
+  top: 12vh;
+  right: 37vw;
+  color: black;
+  z-index: 200;
 }
 </style>

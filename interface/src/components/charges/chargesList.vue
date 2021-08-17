@@ -5,7 +5,7 @@
     </div>
     <div class="chargesHeader">
       <div class="dateFilters">
-        <form action="" @submit.prevent="reloaded">
+        <form action="" @submit.prevent="reload">
           <select @change="changeMonth($event)" :value="selectedMonth">
             <option v-for="month in months" :key="month.index">{{
               month
@@ -20,12 +20,21 @@
 
           <submit-button :btnText="'Filtrer'" :type="'submit'" />
         </form>
+        <div class="addBtnContainer">
+          <router-link to="/charges/create" class="button"
+            >Nouvelle Charge
+          </router-link>
+
+          <router-view> </router-view>
+        </div>
+        <div class="chargesSum">
+          <h4>
+            Total du mois:<span class="totalSpan">{{ total + " Dh" }} </span>
+          </h4>
+        </div>
       </div>
-      <div class="chargesSum">
-        <h4>
-          Total du mois:<span class="totalSpan">{{ total + " Dh" }} </span>
-        </h4>
-      </div>
+
+      <!-- <add-charge v-if="addForm" class="addComponent" @reload="reload" /> -->
     </div>
     <div class="chargesTable">
       <table>
@@ -51,13 +60,7 @@
 
             <td class="dateCharge">
               <span>
-                {{
-                  formatDate(
-                    charge.dateCharge.Day,
-                    charge.dateCharge.Month,
-                    charge.dateCharge.Year
-                  )
-                }}
+                {{ formatDate(charge.dateCharge) }}
               </span>
 
               <i @click="confirmation(charge._id)" class="fas fa-trash-alt"></i>
@@ -65,7 +68,6 @@
           </tr>
         </tbody>
       </table>
-      <add-charge class="addComponent" @reload="reloaded" />
     </div>
   </div>
 </template>
@@ -74,35 +76,52 @@
 import { mapGetters, mapActions } from "vuex";
 import submitButton from "../shared/submitButton.vue";
 import moment from "moment";
-import AddCharge from "./addCharge.vue";
+// import AddCharge from "./addCharge.vue";
 export default {
-  components: { submitButton, AddCharge },
+  components: { submitButton },
   name: "chargesList",
 
   data() {
     return {
       selectedYear: moment().get("year"),
       selectedMonth: this.currentMonth(),
-
       charges: [],
+      addForm: false,
       total: 0,
     };
   },
 
   methods: {
     ...mapActions(["getCharges", "remove"]),
+
+    toggleAddForm() {
+      this.addForm = !this.addForm;
+    },
+    getMonthCharges() {
+      return (this.charges = this.currentMonthCharges(
+        this.selectedYear,
+        this.selectedMonth,
+        this.selectedAuto
+      ));
+    },
     changeMonth(e) {
-      this.selectedMonth = e.target.value;
+      return (this.selectedMonth = e.target.value);
     },
     changeYear(e) {
-      this.selectedYear = e.target.value;
+      return (this.selectedYear = e.target.value);
     },
 
     confirmation(cid) {
       if (confirm("Etes vous sur de vouloir supprimer?")) {
         this.remove(cid);
-        this.reloaded();
+        this.reload();
       }
+    },
+
+    async reload() {
+      await this.getCharges();
+      this.getMonthCharges();
+      this.totalCharges();
     },
 
     currentMonth() {
@@ -112,22 +131,11 @@ export default {
       return moment().get("month") + 1;
     },
 
-    formatDate(d, m, y) {
-      let dateStr = `${d}-${m}-${y}`;
-      return moment().format(dateStr, "DD-MM-YYYY");
+    formatDate(isoDate) {
+      return moment(isoDate).format("DD-MM-YYYY");
     },
-    currentMonthCharges() {
-      return (this.charges = this.getCurrentMonthCharges(
-        this.selectedMonth,
-        this.selectedYear,
-        this.selectedAuto
-      ));
-    },
-    async reloaded() {
-      await this.getCharges();
-      this.currentMonthCharges();
-      this.totalCharges(this.charges);
-    },
+
+    // await this.totalCharges();
 
     totalCharges() {
       let sum = 0;
@@ -139,7 +147,14 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["getCurrentMonthCharges", "selectedAuto"]),
+    ...mapGetters(["currentMonthCharges", "selectedAuto", "allCharges"]),
+    // charges() {
+    //   return this.currentMonthCharges(
+    //     this.selectedYear,
+    //     this.selectedMonth,
+    //     this.selectedAuto
+    //   );
+    // },
 
     months() {
       const arr = [];
@@ -160,13 +175,42 @@ export default {
     },
   },
 
-  created() {
-    this.reloaded();
+  async created() {
+    await this.getCharges();
+    this.charges = await this.currentMonthCharges(
+      this.selectedYear,
+      this.selectedMonth,
+      this.selectedAuto
+    );
+    this.totalCharges();
   },
 };
 </script>
 
 <style scoped>
+.chargesContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin: auto;
+}
+
+.chargesSum {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chargesSum h4 {
+  display: inline-block;
+  width: 100%;
+  font-size: 1.1rem;
+  cursor: none;
+  color: rgb(92, 92, 92);
+}
+
 .dateCharge {
   position: relative;
 }
@@ -183,9 +227,8 @@ export default {
 .totalSpan {
   background-color: crimson;
   color: white;
-  padding: 5px;
+  padding: 0.2em;
   border-radius: 5px;
-  margin-left: 5px;
 }
 .chargesHeader {
   width: 100%;
@@ -193,19 +236,31 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-.chargesContainer {
-  width: 80%;
+
+.dateFilters {
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: center;
-  margin: auto;
+  margin: 2vh 0;
+}
+
+@media screen and (max-width: 1200px) {
+  .dateFilters {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .addBtnContainer {
+    width: 90%;
+  }
 }
 
 .chargesTable {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-start;
 }
 
@@ -214,6 +269,27 @@ form {
   justify-content: center;
   align-items: center;
 }
+
+@media screen and (max-width: 1200px) {
+  form {
+    flex-direction: column;
+    width: 90%;
+  }
+  form select {
+    display: inline-block;
+    width: 60%;
+  }
+}
+/* @media screen and (max-width: 900px) {
+  form {
+    flex-direction: column;
+    width: 90%;
+  }
+  form select {
+    display: inline-block;
+    width: 60%;
+  }
+} */
 
 form select {
   padding: 3px;

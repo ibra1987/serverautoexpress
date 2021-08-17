@@ -1,20 +1,29 @@
 <template>
-  <div class="addChargeFormContainer">
-    <div class="formHeader">
-      Ajouter une charge
-    </div>
-    <form method="post" @submit.prevent="chargeSubmitted">
+  <div class="addFormContainer">
+    <form @submit.prevent="chargeSubmitted">
+      <div class="close">
+        <router-link to="/charges">
+          Fermer X
+        </router-link>
+      </div>
+      <div class="formHeader">
+        Ajouter une charge
+      </div>
       <input
         type="text"
         name="Libelle"
         placeholder="Libelle "
         v-model="Libelle"
+        :class="errors.length > 0 ? 'error' : ''"
+        @keyup="errors = []"
       />
       <input
         type="number"
         name="Montant"
         placeholder="Montant "
         v-model="Montant"
+        :class="errors.length > 0 ? 'error' : ''"
+        @keyup="errors = []"
       />
       <select
         v-model="autoEcole"
@@ -26,14 +35,13 @@
           {{ auto.Name }}
         </option>
       </select>
-      <input type="date" name="dateCharge" v-model="dateCharge" />
+      <input type="date" v-model="dateCharge" />
       <submit-button :btnText="'Ajouter'" :type="'submit'" class="btnBlock" />
     </form>
   </div>
 </template>
 
 <script>
-import moment from "moment";
 import submitButton from "../shared/submitButton.vue";
 import { mapActions, mapGetters } from "vuex";
 export default {
@@ -45,26 +53,30 @@ export default {
       Libelle: "",
       Montant: "",
       dateCharge: "",
+      errors: [],
     };
   },
 
   methods: {
     ...mapActions(["addCharge"]),
     async chargeSubmitted() {
+      if (this.Libelle == "" || this.Montant == "") {
+        if (!this.errors.length) {
+          return this.errors.push("Merci de renseigner tous les champs");
+        }
+        return;
+      }
       const newCharge = {
         Libelle: this.Libelle,
         Montant: this.Montant,
         autoEcole: this.autoEcole,
-        dateCharge: {
-          Day: moment(this.dateCharge).format("DD"),
-          Month: moment(this.dateCharge).format("MM"),
-          Year: moment(this.dateCharge).format("YYYY"),
-        },
+        dateCharge: new Date(Date.parse(this.dateCharge)).toISOString(),
       };
 
       await this.addCharge(newCharge);
       this.Libelle = "";
       this.Montant = "";
+
       this.dateCharge = "";
       this.$emit("reload");
     },
@@ -82,41 +94,29 @@ export default {
 </script>
 
 <style scoped>
-.formHeader {
-  color: #292b2c;
-  width: 100%;
-  padding: 2vh 0;
-  background-color: #ffbb33;
-}
-.btnBlock {
-  width: 100%;
-  background-color: #ffbb33;
-  color: #292b2c;
-}
-.addChargeFormContainer {
+form {
+  width: 30%;
+  height: 80%;
   display: flex;
   flex-direction: column;
-  padding: 5px;
   justify-content: center;
   align-items: center;
-  background-color: #292b2c;
-  width: 100%;
+  background-color: white;
+  border-radius: 0.3em;
 }
-form {
-  margin-top: 4vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
+@media screen and (max-width: 1200) {
+  form {
+    width: 95%;
+  }
 }
 
 input,
 select {
-  margin: 10px;
-  padding: 1vh 5px;
-  width: 100%;
+  padding: 2vh 1vw;
+  width: 80%;
   border: none;
   background-color: rgb(243, 243, 243);
   outline: none;
+  margin: 2vh 1vw;
 }
 </style>

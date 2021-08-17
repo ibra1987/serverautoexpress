@@ -34,8 +34,8 @@ const actions = {
 };
 
 const mutations = {
-  vehiculesLoaded: (state, paylod) => (state.vehicules = paylod),
-  vehiculeAdded: (state, paylod) => state.vehicules.unshift(paylod),
+  vehiculesLoaded: (state, payload) => (state.vehicules = payload),
+  vehiculeAdded: (state, payload) => state.vehicules.unshift(payload),
   vehiculeRemoved: (state, payload) =>
     (state.vehicules = state.vehicules.filter(
       (vehicule) => vehicule._id !== payload

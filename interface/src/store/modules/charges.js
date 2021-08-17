@@ -8,26 +8,31 @@ const state = {
 
 const getters = {
   allCharges: (state) => state.charges,
-  getCurrentMonthCharges: (state) => (month, year, auto) => {
-    return state.charges.filter(
-      (monthCharges) =>
-        monthCharges.dateCharge.Month === String(month) &&
-        monthCharges.dateCharge.Year === String(year) &&
-        monthCharges.autoEcole === auto
-    );
+  currentMonthCharges: (state) => (year, month, auto) => {
+    return state.charges.filter((charge) => {
+      return (
+        charge.autoEcole === auto &&
+        moment(charge.dateCharge).get("month") + 1 === parseInt(month) &&
+        moment(charge.dateCharge).get("year") === parseInt(year)
+      );
+    });
   },
 
-  chargesMonth: (state) => (auto) => {
-    const montants = state.charges.filter(
-      (charge) =>
+  weekCharges: (state) => (auto) => {
+    return state.charges.filter((charge) => {
+      return (
         charge.autoEcole === auto &&
-        charge.dateCharge.Month === moment().format("MM")
-    );
-
-    return montants.reduce(
-      (total, next) => parseInt(total) + parseInt(next.Montant),
-      0
-    );
+        moment(charge.dateCharge).isoWeek() === moment().isoWeek()
+      );
+    });
+  },
+  yearCharges: (state) => (auto) => {
+    return state.charges.filter((charge) => {
+      return (
+        charge.autoEcole === auto &&
+        moment(charge.dateCharge).format("YYYY") === moment().format("YYYY")
+      );
+    });
   },
 };
 const actions = {
