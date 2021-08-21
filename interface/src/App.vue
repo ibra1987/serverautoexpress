@@ -6,18 +6,26 @@
       <navBar />
       <router-view> </router-view>
     </div>
+    <footer>tous droits reserves @{{ auto }}</footer>
   </div>
 </template>
 
 <script>
 import navBar from "./components/shared/navBar.vue";
 import myHeader from "./components/shared/headerBoard.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "App",
   components: {
     navBar,
     myHeader,
+  },
+
+  computed: {
+    ...mapGetters(["selectedAuto"]),
+    auto() {
+      return this.selectedAuto;
+    },
   },
 
   methods: {
@@ -31,6 +39,24 @@ export default {
 </script>
 
 <style>
+footer {
+  margin-top: 20vh;
+  width: 100%;
+  padding: 3vh;
+  background-color: rgb(68, 66, 66);
+  color: white;
+}
+a {
+  text-decoration: none;
+}
+.sectionContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin: auto;
+}
 .addBtnContainer {
   display: flex;
   justify-content: center;
@@ -70,7 +96,9 @@ body {
   margin: 0;
   box-sizing: border-box;
   background-color: rgb(235, 231, 231);
+  scroll-behavior: smooth;
 }
+
 table {
   width: 90%;
 }
@@ -163,6 +191,7 @@ tr:nth-child(even) {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100%;
 }
 
 .container {

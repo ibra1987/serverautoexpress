@@ -11,12 +11,26 @@ import addVehicule from "../components/vehicules/addVehicule.vue";
 import echeancesList from "../components/echeances/echeancesList.vue";
 import addEcheance from "../components/echeances/addEcheance.vue";
 import tableauDeBord from "../components/tableaudebord/tableauDeBord.vue";
+import personnelList from "../components/personnel/personnelList.vue";
+import addPersonnel from "../components/personnel/addPersonnel.vue";
 
 const routes = [
   {
     path: "/tableaudebord",
     component: tableauDeBord,
     name: "tableauDeBord",
+  },
+  {
+    path: "/personnel",
+    component: personnelList,
+    name: "personnelList",
+    children: [
+      {
+        path: "/personnel/create",
+        component: addPersonnel,
+        name: "addPersonnel",
+      },
+    ],
   },
   {
     path: "/candidates/edit/:id",

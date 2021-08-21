@@ -8,13 +8,30 @@ const state = {
 };
 
 const getters = {
-  allCandidates: (state) => (auto) => {
+  allCandidates: (state) => (auto, limit) => {
     let newState = [];
     state.candidates.map((candidate) => {
       if (candidate.autoEcole === auto) newState.unshift(candidate);
     });
 
-    return newState;
+    return newState.slice(0, limit);
+  },
+
+  paid: (state) => (auto) => {
+    const paid = state.candidates.filter((candidate) => {
+      return (
+        candidate.autoEcole === auto &&
+        parseInt(candidate.Price) ===
+          candidate.Avances.reduce((sum, value) => {
+            if (value.Montant > 0) {
+              return parseInt(sum) + parseInt(value.Montant);
+            }
+            return 0;
+          }, 0)
+      );
+    });
+
+    return paid.length;
   },
   allAvances: (state) => state.Avances,
 

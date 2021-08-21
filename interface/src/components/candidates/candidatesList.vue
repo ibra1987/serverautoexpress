@@ -8,6 +8,10 @@
           v-if="!editForm && !addForm"
         />
       </router-link>
+
+      <div>
+        Candidats ayant paye : <span class="paye"> {{ paye }}</span>
+      </div>
     </div>
     <add-candidate v-on:hideme="showForm" v-show="addForm" />
     <!-- <edit-candidate v-if="editForm" @hideEdit="showEditForm" /> -->
@@ -29,12 +33,7 @@
           v-for="candidate in candidates"
           :key="candidate._id"
           :class="
-            parseInt(candidate.Price) ==
-            parseInt(
-              candidate.Avances.reduce((sum, value) => {
-                return parseInt(sum) + parseInt(value.Montant);
-              }, 0)
-            )
+            parseInt(candidate.Price) === sumAvances(candidate.Avances)
               ? 'paid'
               : ''
           "
@@ -43,25 +42,13 @@
           <td>{{ candidate.Fname }} {{ candidate.Lname }}</td>
           <td>{{ candidate.Cin }}</td>
           <td>{{ candidate.Categorie }}</td>
-          <td
-            :class="
-              candidate.Price ===
-              candidate.Avances.reduce((sum, value) => {
-                return sum + parseInt(value.Montant);
-              }, 0)
-                ? 'paid'
-                : 'green'
-            "
-          >
+          <td>
             {{ candidate.Price }}
           </td>
           <td>
             <span
               :class="
-                candidate.Price ===
-                candidate.Avances.reduce((sum, value) => {
-                  return sum + parseInt(value.Montant);
-                }, 0)
+                candidate.Price === sumAvances(candidate.Avances)
                   ? 'paid'
                   : 'avance'
               "
@@ -84,6 +71,7 @@
         <td></td>
       </tbody>
     </table>
+    <div class="chargement" v-if="chargement">chargement ...</div>
 
     <Avances v-if="showAvance" @hideAvances="triggerAvanceModal" :id="id" />
   </div>
@@ -111,16 +99,22 @@ export default {
       showAvance: false,
       id: "",
       sommeAvances: 0,
+      limit: 8,
+      chargement: false,
     };
   },
 
   computed: {
-    ...mapGetters(["allCandidates", "selectedAuto"]),
+    ...mapGetters(["allCandidates", "selectedAuto", "paid"]),
     candidates() {
-      return this.allCandidates(this.autoEcole);
+      return this.allCandidates(this.autoEcole, this.limit);
     },
     autoEcole() {
       return this.selectedAuto;
+    },
+
+    paye() {
+      return ` ${this.paid(this.selectedAuto)} / ${this.candidates.length}`;
     },
   },
 
@@ -144,9 +138,19 @@ export default {
       this.id = id;
     },
 
-    //sum of avances foreach
+    onscroll() {
+      let bottomOfWindow =
+        document.documentElement.scrollTop + window.innerHeight ===
+        document.documentElement.offsetHeight;
 
-    //show/hide Form
+      if (bottomOfWindow) {
+        this.chargement == true;
+        this.limit += 10;
+
+        this.chargement == false;
+        this.allCandidates(this.selectedAuto, this.limit);
+      }
+    },
 
     showForm() {
       this.addForm = !this.addForm;
@@ -168,6 +172,13 @@ export default {
         this.removeCandidate(cid);
       }
     },
+  },
+
+  mounted() {
+    window.addEventListener("scroll", this.onscroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.onscroll);
   },
 };
 </script>
@@ -191,6 +202,15 @@ export default {
   cursor: pointer;
   border-left: 1px solid lightgrey;
 }
+.paye {
+  display: inline-block;
+  padding: 0.3em 0.8em;
+  background-color: crimson;
+  border-radius: 3px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+}
 
 .firstPageLi {
   border: none !important;
@@ -202,9 +222,9 @@ export default {
   background-color: red;
 }
 .btnContainer {
-  width: 100%;
+  width: 85%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
 }
 .candidatesContainer {

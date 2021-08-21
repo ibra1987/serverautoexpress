@@ -1,5 +1,5 @@
 <template>
-  <div class="chargesContainer">
+  <div class="sectionContainer">
     <div class="heading">
       <h2>Charges du mois</h2>
     </div>
@@ -188,15 +188,6 @@ export default {
 </script>
 
 <style scoped>
-.chargesContainer {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  margin: auto;
-}
-
 .chargesSum {
   display: flex;
   justify-content: center;
@@ -221,9 +212,7 @@ export default {
   right: 5px;
   font-size: 15px;
 }
-.addComponent {
-  width: 30%;
-}
+
 .totalSpan {
   background-color: crimson;
   color: white;
