@@ -57,7 +57,7 @@ const routes = [
   },
 
   {
-    path: "/",
+    path: "",
     component: Home,
   },
   {

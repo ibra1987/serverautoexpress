@@ -5,13 +5,18 @@ const state = {
   autoEcoles: [],
   selectedOne: "Akka",
   benefices: 0,
+  authenticated: false,
 };
 
 const getters = {
   selectedAuto: (state) => state.selectedOne,
   allAutoEcoles: (state) => state.autoEcoles,
+  isAuthenticated: (state) => state.authenticated,
 };
 const actions = {
+  login: ({ commit }) => {
+    commit("loggedIn");
+  },
   selectNewAuto: ({ commit }, newAuto) => {
     commit("newAutoSelected", newAuto);
   },
@@ -40,6 +45,7 @@ const mutations = {
   newAutoSelected: (state, newAuto) => (state.selectedOne = newAuto),
   autoEcolesLoaded: (state, payload) => (state.autoEcoles = payload),
   newAutoEcoleAdded: (state, newAuto) => state.autoEcoles.push(newAuto),
+  loggedIn: (state) => (state.authenticated = true),
 };
 
 export default {

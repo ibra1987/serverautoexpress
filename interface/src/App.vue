@@ -1,17 +1,19 @@
 <template>
   <div id="app">
-    <div class="container">
+    <home v-if="!isAuthenticated" />
+    <div class="container" v-if="isAuthenticated">
       <my-header />
 
       <navBar />
       <router-view> </router-view>
+      <footer>tous droits reserves @{{ auto }}</footer>
     </div>
-    <footer>tous droits reserves @{{ auto }}</footer>
   </div>
 </template>
 
 <script>
 import navBar from "./components/shared/navBar.vue";
+import Home from "./components/shared/Home.vue";
 import myHeader from "./components/shared/headerBoard.vue";
 import { mapActions, mapGetters } from "vuex";
 export default {
@@ -19,10 +21,11 @@ export default {
   components: {
     navBar,
     myHeader,
+    Home,
   },
 
   computed: {
-    ...mapGetters(["selectedAuto"]),
+    ...mapGetters(["selectedAuto", "isAuthenticated"]),
     auto() {
       return this.selectedAuto;
     },
@@ -41,6 +44,9 @@ export default {
 <style>
 footer {
   margin-top: 20vh;
+
+  bottom: 0;
+  left: 0;
   width: 100%;
   padding: 3vh;
   background-color: rgb(68, 66, 66);
