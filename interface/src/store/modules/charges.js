@@ -1,6 +1,6 @@
 import axios from "axios";
 import moment from "moment";
-const baseUrl = "http://localhost:3001/charges";
+const baseUrl = "/api/charges";
 
 const state = {
   charges: [],

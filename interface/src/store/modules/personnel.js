@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://localhost:3001/personnel";
+const baseUrl = "/api/personnel";
 
 const state = {
   personnel: [],

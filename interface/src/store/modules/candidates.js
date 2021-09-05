@@ -1,7 +1,7 @@
 import axios from "axios";
 import moment from "moment";
 
-const baseUrl = "http://localhost:3001/candidates";
+const baseUrl = "/api/candidates";
 const state = {
   candidates: [],
   Avances: [],

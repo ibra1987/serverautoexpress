@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://localhost:3001/echeances";
+const baseUrl = "/api/echeances";
 
 const state = {
   echeances: [],

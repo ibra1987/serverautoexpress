@@ -29,10 +29,16 @@ app.listen(port, () => console.log(` server started @ ${port}`));
 
 connection();
 // routes
-app.use("/users", usersRoutes);
-app.use("/candidates", candidatesRoutes);
-app.use("/charges", chargesRoutes);
-app.use("/vehicules", vehiculesRoutes);
-app.use("/echeances", echeancesRoutes);
-app.use("/autoecoles", autoEcolesRoutes);
-app.use("/personnel", personnelRoutes);
+app.use("/api/users", usersRoutes);
+app.use("/api/candidates", candidatesRoutes);
+app.use("/api/charges", chargesRoutes);
+app.use("/api/vehicules", vehiculesRoutes);
+app.use("/api/echeances", echeancesRoutes);
+app.use("/api/autoecoles", autoEcolesRoutes);
+app.use("/api/personnel", personnelRoutes);
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(__dirname + "/public/"));
+  app.get(/.*/, (req, res) => {
+    res.sendFile(__dirname + "/public/index.html");
+  });
+}

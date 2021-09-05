@@ -32,7 +32,7 @@ export default {
         Password: this.password,
       };
       const res = await axios.post(
-        `http://localhost:3001/users/login`,
+        `api/users/login`,
         creds,
         { withCredentials: true },
         {
@@ -47,8 +47,8 @@ export default {
       }
 
       if (res.status === 200) {
-        const cookie = await this.$cookies.get("jwt");
-        console.log(cookie);
+        this.login();
+        this.$router.push("/tableaudebord");
       }
     },
   },
