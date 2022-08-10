@@ -64,7 +64,10 @@ exports.createCandidate = async (req, res) => {
     // const newCharge = new chargeModel(fraisDossier);
 
     // await newCharge.save();
-    res.status(201).json(newCandidate);
+    res.status(201).json({
+      new: newCandidate,
+      message: "Nouveau candidat ajouté avec succès",
+    });
   } catch (error) {
     res.status(400).json(error.message);
   }
@@ -118,14 +121,17 @@ exports.updateCandidate = async (req, res) => {
         autoEcole,
       };
 
-      const updated = await candidateModel.findByIdAndUpdate(
+      const updated = await candidateModel.findOneAndUpdate(
         { _id: id },
         newUpd,
         {
           new: true,
         }
       );
-      res.json(updated);
+
+      res
+        .status(200)
+        .json({ updated, message: "Enregistrement modifié avec succès" });
     }
   } catch (error) {
     res.json(error);

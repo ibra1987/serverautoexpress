@@ -6,6 +6,7 @@ const echeancesRoutes = require("./routes/echeancesRoutes");
 const autoEcolesRoutes = require("./routes/autoEcolesRoutes");
 const personnelRoutes = require("./routes/personnelRoutes");
 const usersRoutes = require("./routes/usersRoutes");
+const cookieParser = require("cookie-parser");
 
 const dotenv = require("dotenv");
 const connection = require("./config/db");
@@ -16,10 +17,11 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:8080"],
+    origin: "*",
   })
 );
 

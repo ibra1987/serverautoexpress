@@ -2,6 +2,7 @@ const userModel = require("../../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
+const User = require("../../models/User");
 require("dotenv").config;
 
 exports.createUser = async (req, res) => {
@@ -37,7 +38,7 @@ exports.createUser = async (req, res) => {
   }
 };
 
-exports.getUser = async (req, res) => {
+exports.login = async (req, res) => {
   const user = await userModel.findOne({ Name: req.body.Name });
 
   if (!user)
@@ -52,13 +53,35 @@ exports.getUser = async (req, res) => {
 
   //   const { Password, ...infos } = user.toJSON();
 
-  const token = jwt.sign({ _id: user._id }, process.env.MYSECRET_KEY);
+  const token = jwt.sign({ _id: user._id }, process.env.MYSECRET);
   //   return res.status(200).json(infos);
 
   res.cookie("jwt", token, {
     httpOnly: true,
-    maxAge: 60 * 1000,
+    maxAge: 60 * 1000 * 60,
   });
 
   res.status(200).json({ message: "succes" });
+};
+
+//getuser
+exports.getUser = async (req, res) => {
+  const jwtCookie = req.cookies.jwt;
+  if (!jwtCookie)
+    return res.status(400).json({ error: "Merci de vous identifier" });
+
+  const { _id } = jwt.verify(jwtCookie, process.env.MYSECRET);
+
+  const user = await User.findOne({ _id });
+  if (!user) return res.status(400).json({ error: "Merci de vous identifier" });
+  const token = jwt.sign({ _id: user._id }, process.env.MYSECRET);
+  //   return res.status(200).json(infos);
+
+  res
+    .cookie("jwt", token, {
+      httpOnly: true,
+      maxAge: 60 * 1000 * 60,
+    })
+    .status(200)
+    .json({ message: "authorized", user: user.Name });
 };

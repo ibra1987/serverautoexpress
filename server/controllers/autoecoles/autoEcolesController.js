@@ -21,8 +21,8 @@ exports.createAutoEcole = async (req, res) => {
 
 exports.getAutoEcoles = async (req, res) => {
   try {
-    const response = await autoEcoleModel.find().exec();
-    res.json(response);
+    const autos = await autoEcoleModel.find().exec();
+    res.json({ message: "success", data: autos });
   } catch (error) {
     res.status(404).json(error);
   }

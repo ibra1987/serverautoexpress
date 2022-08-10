@@ -20,7 +20,7 @@ exports.readRecords = async (req, res, model) => {
       .skip((p - 1) * resultsPerPage);*/
 
     if (models) {
-      return res.status(200).json(models);
+      return res.status(200).json({ data: models, message: "success" });
     }
 
     return res.status(400).json({ msg: error.message });
